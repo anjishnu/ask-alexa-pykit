@@ -1,0 +1,32 @@
+{
+    "intents": [
+        {
+            "intent": "CallDadIntent",
+            "slots": [
+                [
+                    {
+                        "name": "PhoneNo",
+                        "type": "NUMBER"
+                    }
+                ],
+                [
+                    {
+                        "name": "CallTime",
+                        "type": "TIME"
+                    }
+                ]
+            ]
+        },
+        {
+            "intent": "CallBack",
+            "slots": [
+                [
+                    {
+                        "name": "Name",
+                        "type": "LITERAL"
+                    }
+                ]
+            ]
+        }
+    ]
+}
