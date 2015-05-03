@@ -19,17 +19,7 @@ if __name__ == "__main__":
         server_config = json.load(server_conf_file)
     
     print ("Loaded server config file")
-    print (json.dumps(server_config, indent=4))
-    """
-    server_config = { 
-        "server.ssl_module" : "builtin",
-        "server.ssl_certificate" : "keys/new_cert.pem",
-        "server.ssl_private_key": "keys/privkey.pem",
-        "server.socket_host": '0.0.0.0',
-        "server.socket_port": 443
-    }
-    """
-    
+    print (json.dumps(server_config, indent=4))    
     config = {"global": server_config}
     
     cherrypy.config.update(server_config)
