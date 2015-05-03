@@ -45,11 +45,11 @@ def create_response(message=None, end_session=False, card_obj=None):
     card_obj = JSON card object to substitute the 'card' field in the raw_response
     format: 
     {
-      "type": "Simple", #COMPULSORY
-      "title": "string", #OPTIONAL
-      "subtitle": "string", #OPTIONAL
-      "content": "string" #OPTIONAL
-    }
+    "type": "Simple", #COMPULSORY
+    "title": "string", #OPTIONAL
+    "subtitle": "string", #OPTIONAL
+    "content": "string" #OPTIONAL
+    }
 
     """
     response = json.loads(raw_response)
@@ -57,7 +57,7 @@ def create_response(message=None, end_session=False, card_obj=None):
         response['response']['outputSpeech']['text'] = message
     response['response']['shouldEndSession'] = end_session
     if card_obj:
-        
+        resopnse['response']['card'] = card_obj
     return response
 
 request_type_of  = lambda r : r['request']['type']

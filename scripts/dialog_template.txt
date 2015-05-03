@@ -1,0 +1,115 @@
+"""
+Copyright - Anjishnu Kumar - http://github.com/anjishnu 2015
+This is the template file for generating a dialog file from a given Intent Schema
+"""
+import json
+from collections import defaultdict as ddict
+
+"""Define mappings from individual intents to a function designed to handle it"""
+dialog_mappings = """{0}"""
+
+"""
+REQUEST BODY SYNTAX:
+{
+"session": {
+        "new": true,
+        "user": {
+            "userId": "amzn1.account.AGBATYSC32Y2QVDQKOWJUUJNEYFA"
+        },
+        "sessionId": "amzn1.echo-api.session.9ac857e7-6d4b-402a-be34-fc8f76057379"
+    },
+    "version": "1.0",
+    "request": {
+        "requestId": "amzn1.echo-api.request.4b79477a-5097-4a10-9d6f-bec24f9d92f1",
+        "type": "LaunchRequest"
+    }
+}
+"""
+
+""" Utility functions to make working with the request objects easier """
+
+request_type_of  = lambda r : r['request']['type']
+intent_of = lambda r : r['request']['intent']['name']
+userId_of  = lambda r : r["session"]['user']['userId']
+
+
+"""-------------------------------- """
+
+
+""" A cache that holds dictionaries of user's metadata, in a production environment this should be replaced by database calls and 
+a caching layer to improve response times. I'm too lazy to write all of that up for a basic demo """
+
+dialog_cache = ddict(lambda : ddict(list))
+
+"""-------------------------------- """
+
+raw_response = """{
+    "version": "1.0",
+    "response": {
+        "outputSpeech": {
+            "type": "PlainText",
+            "text": "Hello world!"
+                },
+        "card": {
+            "type": "Simple",
+            "title": "string",
+            "subtitle": "string",
+            "content": "string"
+        }
+        "shouldEndSession": False
+    }
+}"""
+
+
+def create_response(message=None, end_session=False, card_obj=None):
+    """
+    message - text message to be spoken out by the Echo
+    end_session - flag to determine whether this interaction should end the session
+    card_obj = JSON card object to substitute the 'card' field in the raw_response
+    format: 
+    {
+    "type": "Simple", #COMPULSORY
+    "title": "string", #OPTIONAL
+    "subtitle": "string", #OPTIONAL
+    "content": "string" #OPTIONAL
+    }
+
+    """
+    response = json.loads(raw_response)
+    if message:
+        response['response']['outputSpeech']['text'] = message
+    response['response']['shouldEndSession'] = end_session
+    if card_obj:
+        response['response']['card'] = card_obj
+    return response
+
+
+def route_intent(intent_request):
+    if request_type_of(intent_request)=="LaunchRequest":
+        return default_launch_dialog(intent_request)
+
+    if request_type_of(intent_request)=="IntentRequest":
+        """Retrieve handler function for a given intent"""
+        dialog_function = dialog_mappings[intent_of(intent_request)]
+        return dialog_function(intent_request)
+
+    if req_of(intent_request)=="SessionEndedRequest":
+        return default_session_ended_dialog(intent_request)
+
+    return ""
+
+def default_launch_dialog(intent_request):
+    """
+    The default dialog to be spoken on launch.
+    TODO:
+    Fill in dialog logic
+    """
+    return create_response("Hello world!")
+
+def default_session_ended_dialog(intent_request):
+    """
+    The default dialog to be spoken on launch.
+    TODO:
+    Fill in dialog logic
+    """
+    return create_response(session_end=True)
