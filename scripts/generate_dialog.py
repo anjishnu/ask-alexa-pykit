@@ -52,7 +52,7 @@ def generate_dialog_file(intent_map):
 
     dialog_map_str = generate_intent_to_func_str(intent_map)
     #print (dialog_map_str)
-    dialog_file_template = dialog_file_template.replace('"""{0}"""', dialog_map_str)
+    dialog_file_template = dialog_file_template.replace('{0}', dialog_map_str)
     #Appending the dialog map functions.
     for intent_name, dialog_fn_name in intent_map.items():
         dialog_file_template+= "\n\n"

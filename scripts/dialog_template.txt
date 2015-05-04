@@ -6,7 +6,7 @@ import json
 from collections import defaultdict as ddict
 
 """Define mappings from individual intents to a function designed to handle it"""
-dialog_mappings = """{0}"""
+dialog_mapping_str = """{0}"""
 
 """
 REQUEST BODY SYNTAX:
@@ -90,6 +90,9 @@ def route_intent(intent_request):
 
     if request_type_of(intent_request)=="IntentRequest":
         """Retrieve handler function for a given intent"""
+
+	"""Loading dialog mappings from string"""
+	dialog_mappings = eval(dialog_mapping_str)
         dialog_function = dialog_mappings[intent_of(intent_request)]
         return dialog_function(intent_request)
 
