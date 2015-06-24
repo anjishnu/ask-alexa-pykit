@@ -80,8 +80,8 @@ def create_response(message=None, end_session=False, card_obj=None):
     if message:
         response['response']['outputSpeech']['text'] = message
     response['response']['shouldEndSession'] = end_session
-    if card_obj:
-        response['response']['card'] = card_obj
+    if card_obj: response['response']['card'] = card_obj
+    else: card_obj = None
     return response
 
 
