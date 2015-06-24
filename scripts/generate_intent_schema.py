@@ -43,8 +43,8 @@ def add_intent(index = 0):
         print ("Slot type? Supported types listed below")
         print (json.dumps(slot_type_mappings, indent=True))
         slot_type = int(input())
-        intent_json['slots'].append([{'name': slot_name, 
-                                      "type": slot_type_mappings[slot_type][0]}])
+        intent_json['slots'].append({'name': slot_name, 
+                                      "type": slot_type_mappings[slot_type][0]})
     return intent_json
 
 if __name__ == "__main__":
