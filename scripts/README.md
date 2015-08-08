@@ -13,5 +13,5 @@ Uses an intent_schema as input and helps a user generate sample utterances for t
 ---
 generate_dialog.py
 ---
-Uses an intent_schema as input and outputs a dialog.py file which can every type of intent 
+Uses an intent_schema as input and outputs a dialog.py file which can handle every every type of intent defined in the Intent Schema.
 
