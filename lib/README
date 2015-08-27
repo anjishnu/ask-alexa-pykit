@@ -1,0 +1,1 @@
+This folder contains the code for abstractions used by the ask-alexa-pykit code.
