@@ -34,8 +34,11 @@ class Request(object):
         return self.request["session"]["sessionId"]
 
     def get_slot_value(self, slot_name):
-        return self.request["request"]["intent"]["slots"][slot_name]["value"]
-
+        try:
+            return self.request["request"]["intent"]["slots"][slot_name]["value"]
+        except:
+            """Value not found"""
+            return None
     
 class RequestHandler(object):
     """
@@ -63,13 +66,6 @@ class RequestHandler(object):
         message - text message to be spoken out by the Echo
         end_session - flag to determine whether this interaction should end the session
         card_obj = JSON card object to substitute the 'card' field in the raw_response
-        format: 
-        {
-        "type": "Simple", #COMPULSORY
-        "title": "string", #OPTIONAL
-        "subtitle": "string", #OPTIONAL
-        "content": "string" #OPTIONAL
-        }
         """
         response = self.base_response
         if message:
@@ -80,6 +76,16 @@ class RequestHandler(object):
         return response
 
     def create_card(self, title=None, subtitle=None, content=None):
+        """
+        card_obj = JSON card object to substitute the 'card' field in the raw_response
+        format: 
+        {
+        "type": "Simple", #COMPULSORY
+        "title": "string", #OPTIONAL
+        "subtitle": "string", #OPTIONAL
+        "content": "string" #OPTIONAL
+        }
+        """
         card = {"type":"Simple"}
         if title: card["title"] = title
         if subtitle: card["subtitle"] = subtitle
@@ -102,6 +108,7 @@ class SimpleIntentHandler(RequestHandler):
         self.slots = []
         
     def get_slot_map(self, request):
+        """"Utility function that returns a dictionary mapping slot type to its value for this intent """
         return {slot_name : request.get_slot_value(slot_name) for slot_name in self.slots}
 
 
