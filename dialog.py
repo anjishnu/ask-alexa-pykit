@@ -25,13 +25,16 @@ def set_up_handlers_for_intents():
         handler_for_intent[intent_name] = intent_handler
     return handler_for_intent
 
+
 def set_up_handlers():
     handlers_map = {}
     handlers_map["IntentRequest"] = set_up_handlers_for_intents()
+    #Handlers for LaunchAppRequest and SessionEndedRequest
     for request_type in NON_INTENT_REQUESTS:
         handlers_map[request_type] = RequestHandler(request_type=request_type,
                                                     response_text = "Just ask.")
     return handlers_map
+
 
 def update_handlers(handlers):
     """
@@ -59,14 +62,14 @@ gives you the appropriate handler
 
 HANDLERS = set_up_handlers()
 
-def route_intent(intent):
+
+def route_intent(request_json):
     """
-    This code routes 
+    This code routes requests to the appropriate handler
     """
-    request = Request(intent)    
+    request = Request(request_json)    
+    handler = HANDLERS[request.request_type()]
     if request.intent_name():
-        handler = HANDLERS[request.request_type()][request.intent_name()]
-    else:
-        handler = HANDLERS[request.request_type()]
+        handler = handler[request.intent_name()]
     return handler.get_response(request)
 
