@@ -5,13 +5,17 @@ generate_intent_schema.py
 Generates a intent_schema.json file by prompting the user
 
 ---
-generate_utterances.py
+generate_training_data.py
 ---
 
 Uses an intent_schema as input and helps a user generate sample utterances for training the model.
 
 ---
-generate_dialog.py
+create_self_signed_certs.sh
 ---
-Uses an intent_schema as input and outputs a dialog.py file which can handle every every type of intent defined in the Intent Schema.
+Uses OpenSSL and command line prompts to take the user through the process of generating a private key and self signed certificate.
 
+---
+create_ssl_cnf.py
+---
+Utility function used to quickly create a .cnf file - used by create_self_signed_certs.sh
