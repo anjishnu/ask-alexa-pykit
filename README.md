@@ -32,7 +32,7 @@ Step 2(b):
 If you are using a certificate from a pre-authorized certification authority, move your private key to the keys/private-key.pem and certificate to keys/certificate.pem
 
 
-Step 3: Create a domain definition for your app
+Step 3: Create a intent schema for your app
 ----------
 
 <b>
