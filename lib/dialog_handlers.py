@@ -2,19 +2,14 @@ import os
 from collections import OrderedDict
 import json
 
-raw_response = """{
+raw_response = """
+{
     "version": "1.0",
     "response": {
         "outputSpeech": {
             "type": "PlainText",
             "text": "Welcome to your recipes. I am ready to serve."
                 },
-        "card": {
-            "type": "Simple",
-            "title": "string",
-            "subtitle": "string",
-            "content": "string"
-        }
         "shouldEndSession": False
     }
 }"""
@@ -44,12 +39,18 @@ class RequestHandler(object):
     """
     This is a generic superclass to handle basic json operations for all response constructions
     """
-    def __init__(self):
-        self.base_response = json.loads(raw_response, object_pairs_hook=OrderedDict)
-
+    base_response = eval(raw_response)
     def get_response(request):
-        return 
-        
+        return self._process_request(request)
+
+    def _process_request(self, request):
+        """
+        This is the function you should overload to 
+        do all sorts of processing to generate the artifacts
+        that are fed into self.create_response
+        """
+        return self.create_response(message=self.response_text)
+    
     def create_response(self, message=None, end_session=False, card_obj=None):
         """
         message - text message to be spoken out by the Echo
@@ -63,7 +64,7 @@ class RequestHandler(object):
         "content": "string" #OPTIONAL
         }
         """
-        self.response = self.base_response
+        response = self.base_response
         if message:
             response['response']['outputSpeech']['text'] = message
         response['response']['shouldEndSession'] = end_session
@@ -83,16 +84,13 @@ class SimpleIntentHandler(RequestHandler):
     """
     This class responds to an intent given a respose
     """
-    def __init__(intent, response_text = "Hello World", slots = []):
-        self.intent = intent
+    def __init__(self, intent_name, response_text = "Hello World", slots = []):
+        self.intent = intent_name
         self.response_text = response_text
         self.slots = []
         
-    def get_response(request):
-        return process_request(request)
-
-    def _process_request_and_generate_resoponse(request):
-        return self.create_response(message=self.response_text)
+    def get_response(self, request):
+        return self._process_request(request)
 
     def set_response_text(self, response_text):
         self.response_text = response_text
