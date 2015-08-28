@@ -36,12 +36,12 @@ def set_up_handlers():
     return handlers_map
 
 
-def update_handlers(handlers):
+def update_handlers(all_handlers):
     """
     # This is an example of how modify intent handlers
 
     #This gives you access to the handler for ExitIntent
-    handler = handler_for_intent["IntentRequest"]["ExitIntent"]    
+    handler = all_handlers["IntentRequest"]["ExitIntent"]    
 
     #This changes the message of the handler!
     handler.set_message("Goodbye")
@@ -49,7 +49,7 @@ def update_handlers(handlers):
     # This sets the voice response of alexa to "GoodBye" whenever it sees an "ExitIntent"    
     return handler_for_intent
     """
-    return handlers
+    return all_handlers
 
 
 """
