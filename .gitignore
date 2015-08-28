@@ -1,2 +1,3 @@
 #Ignore keys (Essential!)
-/keys/*
+keys/*
+!keys/README

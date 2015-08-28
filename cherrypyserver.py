@@ -10,8 +10,8 @@ class BasicResponse(object):
     def index(self):
         input_json = cherrypy.request.json
         print ("Request", input_json)
-        output_str = dialog.route_intent(input_json)
-        return output_str
+        output_json = dialog.route_intent(input_json)
+        return output_json
    
 if __name__ == "__main__":
     

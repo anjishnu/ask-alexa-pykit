@@ -1,85 +1,63 @@
 import json
 from collections import defaultdict as ddict
+from lib.dialog_handlers import SimpleIntentHandler, Request
+
+
+DEFAULT_INTENT_SCHEMA_LOCATION = "config/intent_schema.json"
+
+
+def load_intent_schema(schema_location = DEFAULT_INTENT_SCHEMA_LOCATION):
+    with open(schema_location, 'r') as intentfile:
+                return json.load(intentfile)
+
+            
+def set_up_handlers_for_intents():
+    """
+    Sets up handlers for intents based on an intent schema
+    """
+    handler_for_intent = {}
+    intent_schema = load_intent_schema()
+    for intent in intent_schema["intents"]:
+        intent_name = intent["intent"]
+        slots = {slot["name"] for slot in intent["slots"]}        
+        intent_handler = SimpleIntentHandler(intent_name=intent_name,
+                                             response_text="Hello World!",
+                                             slots=slots)
+        handler_for_intent[intent_name] = intent_handler
+    return handler_for_intent
+
+
+def update_handlers(handler_for_intent):
+    """
+    # This is an example of how modify intent handlers
+
+    #This gives you access to the handler for ExitIntent
+    handler = handler_for_intent["ExitIntent"]    
+
+    #This changes the message of the handler!
+    handler.set_message("Goodbye")
+    
+    # This sets the voice response of alexa to "GoodBye" whenever it sees an "ExitIntent"    
+    return handler_for_intent
+    """
+    return handler_for_intent
 
 
 """
-REQUEST BODY SYNTAX:
-{
-"session": {
-        "new": true,
-        "user": {
-            "userId": "amzn1.account.AGBATYSC32Y2QVDQKOWJUUJNEYFA"
-        },
-        "sessionId": "amzn1.echo-api.session.9ac857e7-6d4b-402a-be34-fc8f76057379"
-    },
-    "version": "1.0",
-    "request": {
-        "requestId": "amzn1.echo-api.request.4b79477a-5097-4a10-9d6f-bec24f9d92f1",
-        "type": "LaunchRequest"
-    }
-}
-"""
-
-raw_response = """{
-    "version": "1.0",
-    "response": {
-        "outputSpeech": {
-            "type": "PlainText",
-            "text": "Welcome to your recipes. I am ready to serve."
-                },
-        "card": {
-            "type": "Simple",
-            "title": "string",
-            "subtitle": "string",
-            "content": "string"
-        }
-        "shouldEndSession": False
-    }
-}"""
-
-
-def create_response(message=None, end_session=False, card_obj=None):
-    """
-    message - text message to be spoken out by the Echo
-    end_session - flag to determine whether this interaction should end the session
-    card_obj = JSON card object to substitute the 'card' field in the raw_response
-    format: 
-    {
-    "type": "Simple", #COMPULSORY
-    "title": "string", #OPTIONAL
-    "subtitle": "string", #OPTIONAL
-    "content": "string" #OPTIONAL
-    }
-
-    """
-    response = json.loads(raw_response)
-    if message:
-        response['response']['outputSpeech']['text'] = message
-    response['response']['shouldEndSession'] = end_session
-    if card_obj:
-        resopnse['response']['card'] = card_obj
-    return response
-
-request_type_of  = lambda r : r['request']['type']
-intent_name_of = lambda r : r['request']['intent']['name']
-userId_of  = lambda r : r["session"]['user']['userId']
-
-dialog_cache = ddict(lambda : ddict(list))
+The HANDLER_FOR_INTENT variable contains a python dict 
+which contains mappings from the intent name to the handler
+e.g. 
+handler = HANDLER_FOR_INTENT[INTENT_NAME]
+gives you the appropriate handler
+"""    
+HANDLERS = set_up_handlers_for_intents()
+HANDLERS = update_handlers(HANDLERS)
 
 def route_intent(intent):
-    if req_of(intent)=="LaunchRequest":
-        return create_response()
-
-    if req_of(intent)=="IntentRequest":
-
-        if type_of(intent)=="FindRecipe":
-            return find_recipe(intent)
-
-        if type_of(intent)=="AddIngredient":
-            return add_ingredient(intent)            
-        
-        if type_of(intent)=="ChooseRecipe":
-            return choose_recipe(intent)
-
-    return ""
+    """
+    This code routes 
+    """
+    request = Request(intent)    
+    intent_handler = HANDLER_FOR_INTENT[request.intent_name()]
+    return intent_handler.get_response(request)
 
