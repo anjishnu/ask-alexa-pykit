@@ -1,7 +1,7 @@
 {
     "server.socket_port": 443, 
-    "server.ssl_private_key": "keys/privkey.pem", 
+    "server.ssl_private_key": "keys/private-key.pem", 
     "server.ssl_module": "builtin", 
     "server.socket_host": "0.0.0.0", 
-    "server.ssl_certificate": "keys/new_cert.pem"
+    "server.ssl_certificate": "keys/certificate.pem"
 }
