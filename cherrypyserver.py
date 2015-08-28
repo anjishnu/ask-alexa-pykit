@@ -14,13 +14,10 @@ class BasicResponse(object):
         return output_json
    
 if __name__ == "__main__":
-    
     with open(server_config_path, 'r') as server_conf_file:
         server_config = json.load(server_conf_file)
-    
     print ("Loaded server config file")
     print (json.dumps(server_config, indent=4))    
     config = {"global": server_config}
-    
     cherrypy.config.update(server_config)
     cherrypy.quickstart(BasicResponse(), config=config)
