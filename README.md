@@ -19,6 +19,7 @@ Generate self signed certificate (Only needed if you don't have a certificate fr
 
 <b>
 $ cd scripts
+
 $ ./create_self_signed_certs.sh
 </b>
 
@@ -43,7 +44,14 @@ After the process is complete, it asks you whether you the intent schema moved t
 
 Step 4: Generate training data and upload to Amazon.
 --------------
-Create a file containing your training examples and upload to Amazon. This hasn't been automated yet - but will be coming soon.
+Create a file containing your training examples and upload to Amazon. 
+I've created a script which loads in the intent schema and does some validation and prompting while you type utterances, but I haven't played around with it enough to know if it actually helps.
+
+<b>$ python3 generate_training_data.py</b>
+
+This script prompts you to enter valid training data in the format defined by the ASK (https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/defining-the-voice-interface). You toggle through the different intents by pressing enter with blank input. Play around with it and see if you find it intuitive.
+
+Once you are done, this script generates a file called utterance.txt with all your training data in it, ready to be uploaded to your skill: https://developer.amazon.com/edw/home.html#/skills
 
 Step 5:
 --------------
