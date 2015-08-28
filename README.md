@@ -5,4 +5,47 @@ Run ./install.sh to download the python dependencies needed for this project. Cu
 
 Detailed instructions coming soon.
 
+Step 1:
+-----
+Install packages
+$ ./install.sh 
+
+This command
+
+Step 2(a): Generate self-signed certificate
+-----------
+Generate self signed certificate (Only needed if you don't have a certificate from a valid hosting authority)
+$ cd scripts
+$ ./create_self_signed_certs.sh
+
+This script takes you through the process of generating your own self signed certificate (note: needs openssl)
+All you need to have with you are: 2 Letter US state, city, organization, skill name and web facing DNS address.
+Once the setup is complete, the private key and certificate produces are moved to the ask-alexa-pykit/keys folder.
+
+Step 2(b): 
+-----------
+If you are using a certificate from a pre-authorized certification authority, move your private key to the keys/private-key.pem and certificate to keys/certificate.pem
+
+
+Step 3: Create a domain definition for your app
+----------
+$ python3 generate_intent_schema.py
+
+This script takes you through the process of generating an intent schema for your app- which defines how Alexa's language understanding system interprets results.
+After the process is complete, it asks you whether you the intent schema moved to the appropriate location.
+
+Step 4: Generate training data and upload to Amazon.
+--------------
+Create a file containing your training examples and upload to Amazon. This hasn't been automated yet - but will be coming soon.
+
+Step 5:
+--------------
+Start the server
+
+$ sudo python3 cherrypyserver.py
+
+This launches the cherrypy server to handle the apps. The server generates response handlers automatically from the intent schema.
+
+Look into the code in dialog.py for details on how the intents are handled.
+
 Credits: Anjishnu Kumar 2015
