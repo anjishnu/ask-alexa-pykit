@@ -23,6 +23,8 @@ class Request(object):
         return self.request["request"]["type"]
 
     def intent_name(self):
+        if not "intent" in self.request["request"]:
+            return None
         return self.request["request"]["intent"]["name"]
 
     def user_id(self):
@@ -40,7 +42,12 @@ class RequestHandler(object):
     This is a generic superclass to handle basic json operations for all response constructions
     """
     base_response = eval(raw_response)
-    def get_response(request):
+    
+    def __init__(self, request_type, response_text):
+        self.request_type = request_type
+        self.response_text = response_text
+    
+    def get_response(self, request):
         return self._process_request(request)
 
     def _process_request(self, request):
@@ -72,25 +79,12 @@ class RequestHandler(object):
             response['response']['card'] = card_obj
         return response
 
-    def create_card(title=None, subtitle=None, content=None):
+    def create_card(self, title=None, subtitle=None, content=None):
         card = {"type":"Simple"}
         if title: card["title"] = title
         if subtitle: card["subtitle"] = subtitle
         if content: card["content"] = content
         return card
-
-    
-class SimpleIntentHandler(RequestHandler):
-    """
-    This class responds to an intent given a respose
-    """
-    def __init__(self, intent_name, response_text = "Hello World", slots = []):
-        self.intent = intent_name
-        self.response_text = response_text
-        self.slots = []
-        
-    def get_response(self, request):
-        return self._process_request(request)
 
     def set_response_text(self, response_text):
         self.response_text = response_text
@@ -98,6 +92,15 @@ class SimpleIntentHandler(RequestHandler):
     def set_card_info(self, card_info):
         raise NotImplementedError
 
+    
+class SimpleIntentHandler(RequestHandler):
+    """ This class responds to an intent given a response """
+    def __init__(self, intent_name, response_text = "Hello World", slots = []):
+        self.request_type = "IntentRequest"
+        self.intent = intent_name
+        self.response_text = response_text
+        self.slots = []
+        
     def get_slot_map(self, request):
         return {slot_name : request.get_slot_value(slot_name) for slot_name in self.slots}
 
