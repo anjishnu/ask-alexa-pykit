@@ -53,11 +53,11 @@ def update_handlers(all_handlers):
 
 
 """
-The HANDLER_FOR_INTENT variable contains a python dict 
+The HANDLERS global variable contains a python dict 
 which contains mappings from the intent name to the handler
 e.g. 
 handler = HANDLERS["IntentRequest"][INTENT_NAME]
-gives you the appropriate handler
+gives you the appropriate handler.
 """    
 
 HANDLERS = set_up_handlers()
