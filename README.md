@@ -68,12 +68,6 @@ Look into the code in dialog.py for details on how the intents are handled.
 
 Notes:
 --------------
-This code is a pretty good starting point for prototyping an app, but is likely not ready for certification - for instance it doesn't do some extra validation required by the ASK before certification and public launch https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/developing-an-alexa-skill-as-a-web-service#Verifying%20that%20the%20Request%20was%20Sent%20by%20Alexa
-
-"If you don't do this, anyone can call your skill. If you write a skill to control your TV, for example, not verifying signatures means anyone on the Internet can control your TV.
-It's analogous to having a public-facing website and not doing any form of authentication. Obviously not a big deal if your website is just serving information, but is a huge deal if it's affecting any state your care about." - <b>Sidoh, Reddit.com</b>
-
-
 Self signed certificates also cannot be used for app certification and launch.
 
 Credits: Anjishnu Kumar 2015
