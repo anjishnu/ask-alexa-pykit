@@ -18,7 +18,7 @@ def linux_cmd(cmd_str):
     return str(subprocess.check_output(shlex.split(cmd_str))).replace("\\n","\n")
 
 
-def valid_alexa_request(headers_map, request_body):
+def valid_alexa_request(headers_map, request_body, disable_timestamp_validation=True):
     '''                                                                                                                                                                  
     Utility function to validate headers                                                                                                                                  
     '''
@@ -34,17 +34,32 @@ def valid_alexa_request(headers_map, request_body):
     is_url_valid =  valid_cert_url(cert_chain_url)
     is_cert_valid = valid_certificate(cert_chain_url, cert_file)    
 
+    if disable_timestamp_validation:
+        is_valid_timestamp = True
+    else:
+        is_valid_timestamp = valid_timestamp(json.loads(request_body.decode('utf-8'))['request']['timestamp'])
     extract_public_key(cert_file, public_key_file)
     signature = headers_map["Signature"]
     decoded_signature = base64.b64decode(signature)
-
     is_signature_verified = verify_signature(request_body, public_key_file, decoded_signature)    
 
     #Cleanup
     for fname in files_to_be_cleaned:
         os.remove(fname)
 
-    return (is_url_valid and is_cert_valid and is_signature_verified)
+    return (is_valid_timestamp and is_url_valid 
+            and is_cert_valid and is_signature_verified)
+
+def valid_timestamp(timestamp_str):
+    "timestamp_str format: '2015-08-29T22:22:37Z' "
+
+    #No idea why my time is offset by this amount... server time drift?
+    mysterious_delta = 296
+
+    timestamp = datetime.strptime(timestamp_str,"%Y-%m-%dT%H:%M:%SZ")
+    dt = datetime.utcnow() - timestamp
+    print (dt, dt.seconds)
+    return False if dt.seconds-mysterious_delta> 150 else True
 
 
 def verify_signature(request_body, public_key_file, signature):
@@ -76,9 +91,7 @@ def valid_certificate(cert_url, cert_file):
     r = requests.get(cert_url)
     with open(cert_file, 'wb') as cfile:
         cfile.write(r.content)
-    #get_cert_text = lambda cert: str(subprocess.check_output(["openssl", "x509", "-text", "-noout", "-in", cert])).replace("\\n","\n")
-    get_cert_text = lambda cert: linux_cmd("openssl x509 -text -noout -in {}".format(cert))
-    
+    get_cert_text = lambda cert: linux_cmd("openssl x509 -text -noout -in {}".format(cert))    
     cert_text = get_cert_text(cert_file)
     if valid_cert_text(cert_text):
         return True
