@@ -1,7 +1,7 @@
 import cherrypy
 import json
 import dialog
-from lib.validation_utils import validated_alexa_request
+from lib.validation_utils import valid_alexa_request
 
 """Verification"""
 from urllib.parse import urlparse
