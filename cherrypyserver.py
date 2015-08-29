@@ -15,7 +15,7 @@ class SkillResponse(object):
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def index(self):
-        content_length = cherrypy.request.headers['Content-Length']
+        content_length = int(cherrypy.request.headers['Content-Length'])
         raw_body = cherrypy.request.body.read(content_length)
         input_json = json.loads(raw_body.decode("utf-8"))
 
