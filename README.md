@@ -11,7 +11,7 @@ Install packages
 
 <b>$ ./install.sh </b>
 
-This command
+This command installs any python or linux packages needed by this code to run.
 
 Step 2(a): Generate self-signed certificate
 -----------
