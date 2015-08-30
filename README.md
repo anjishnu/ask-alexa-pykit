@@ -3,7 +3,7 @@ Super simple Python starter code for developing apps for the Amazon Echo's  SDK 
 Check the scripts in the scripts folder for utility code on how to get started with building the config files used by the ASK.
 Run ./install.sh to download the python dependencies needed for this project. Currently the install.sh script is designed for a Ubuntu style Linux platform, but take a look inside, porting it over to Mac or Windows should be pretty trivial if you have python installed. 
 
-Detailed instructions coming soon.
+Check out https://github.com/anjishnu/ask-alexa-pykit/blob/master/EC2HOWTO.md for instructions on how to deploy this server on an EC2 instance. 
 
 Step 1:
 -----
