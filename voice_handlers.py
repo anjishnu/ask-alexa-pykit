@@ -38,8 +38,7 @@ def get_recipe_intent_handler(request):
                              end_session=False,
                              card_obj=card)
 
-"""
+
 @VoiceHandler(intent="NextRecipeIntent")
 def call_back_intent_handler(request):
     return r.create_response(message="Getting Next Recipe ...")
-"""
