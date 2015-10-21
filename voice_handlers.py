@@ -27,18 +27,19 @@ def session_ended_request_handler(request):
 @VoiceHandler(intent='GetRecipeIntent')
 def get_recipe_intent_handler(request):
 
-    ingredient = request.get_slot("Ingredient")
+    ingredient = request.get_slot_value("Ingredient")
     ingredient = ingredient if ingredient else ""
-    card = r.create_card(title="CallDadIntent Activated",
+    card = r.create_card(title="GetRecipeIntent activated",
                          subtitle=None,
-                         content="used echo to call dad on {}"
+                         content="asked alexa to find a recipe using {}"
                          .format(ingredient))
     
-    return response_builder.create_response(message="Calling dad now...",
-                                            end_session=False,
-                                            card_obj=card)
+    return r.create_response(message="Finding a recipe with the ingredient {}".format(ingredient),
+                             end_session=False,
+                             card_obj=card)
 
-
+"""
 @VoiceHandler(intent="NextRecipeIntent")
 def call_back_intent_handler(request):
-    return r.create_response(message="Getting Next Recipe")
+    return r.create_response(message="Getting Next Recipe ...")
+"""

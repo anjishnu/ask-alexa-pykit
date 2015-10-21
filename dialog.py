@@ -1,8 +1,9 @@
+from __future__ import print_function
 import json
 from collections import defaultdict 
-from lib.dialog_utils import ResponseBuilder, Request
+from lib.dialog_utils import Request
 import pkgutil
-import handlers
+import voice_handlers
 import inspect
 
 DEFAULT_INTENT_SCHEMA_LOCATION = "config/intent_schema.json"
@@ -14,23 +15,34 @@ def load_intent_schema(schema_location = DEFAULT_INTENT_SCHEMA_LOCATION):
 
             
 def initialize_handlers():
+    """
+    Automatically populate function handlers from the handlers
+    """
     # If no handler is specified, backoff to default handler 
-    init_default_handler = lambda : handlers.default_handler
+    init_default_handler = lambda : voice_handlers.default_handler
     all_handlers_map = defaultdict(init_default_handler)
     intent_handlers_map = defaultdict(init_default_handler)
-    # Loading intent schema 
+
+    # Load intent schema to verify that handlers are mapped to valid intents
     intent_schema = load_intent_schema()
     all_intents = {intent["intent"] : { slot["name"] : slot["type"] for slot in intent['slots'] }
                    for intent in intent_schema['intents'] }
-    member_functions = inspect.getmembers(module, inspect.isfunction)
+
+    #Loaded functions in the handlers module
+    member_functions = inspect.getmembers(voice_handlers, inspect.isfunction)
+
     for (name, function) in member_functions:
         if hasattr(function, 'voice_handler'): #Function has been decorated as a voice_handler
             if 'request_type' in function.voice_handler:
                 if function.voice_handler['request_type'] in NON_INTENT_REQUESTS: 
-                    all_handlers_map[f.voice_handler['request_type']] = function                    
+                    # Function is a valid request voice handler
+                    all_handlers_map[function.voice_handler['request_type']] = function                    
+
             elif 'intent' in function.voice_handler:
                 if function.voice_handler['intent'] in all_intents:
-                    intent_handler_map[function.voice_handler['intent']] = function 
+                    # Function is a valid intent voice handler
+                    intent_handlers_map[function.voice_handler['intent']] = function 
+
     all_handlers_map['IntentRequest'] = intent_handlers_map                
     return all_handlers_map
 
@@ -54,4 +66,4 @@ def route_intent(request_json):
     voice_handler = REGISTERED_HANDLERS[request.request_type()]
     if request.intent_name():
         voice_handler = voice_handler[request.intent_name()]
-    return voice_handler(request, response_builder)
+    return voice_handler(request)

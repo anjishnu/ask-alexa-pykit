@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from __future__ import print_function
 import json
 import re
@@ -5,7 +6,7 @@ import re
 DEFAULT_INTENT_SCHEMA_LOCATION = "../config/intent_schema.json"
 
 def print_description(intent):
-    print ("<> Enter data for <{intent}>, press enter with empty string to move onto next intent"
+    print ("<> Enter data for <{intent}> OR Press enter with empty string to move onto next intent"
            .format(intent=intent["intent"]))
     print ("<> Enter '<' to delete last training utterance")
     print ("<> Sample utterance to remind you of the format:")
@@ -17,7 +18,7 @@ def print_description(intent):
 
 def validate_input_format(utterance, intent):
     """ TODO add handling for bad input"""
-    slots = {slot["name"].lower() for slot in intent["slots"]}
+    slots = {slot["name"] for slot in intent["slots"]}
     split_utt = re.split("{(.*)}", utterance)
 
     banned = set("-/\\()^%$#@~`-_=+><;:")
@@ -32,11 +33,13 @@ def validate_input_format(utterance, intent):
             if len(split_token)!=2:
                 print (" - Error, token is incorrect in", token, split_token)
                 return False
+
             word, slot = split_token
-            if slot.lower() not in slots:
+            if slot.strip() not in slots:
                 print (" -", slot, "is not a valid slot for this Intent, valid slots are", slots)
                 return False
     return True
+
 
 def generate_training_data(intent_schema = DEFAULT_INTENT_SCHEMA_LOCATION):
     with open(intent_schema) as input_file:
@@ -58,6 +61,7 @@ def generate_training_data(intent_schema = DEFAULT_INTENT_SCHEMA_LOCATION):
             else:
                 print (" - Discarded utterance:", utterance)
     return training_data                
+
 
 with open("utterances.txt", 'w') as utterance_file:
     utterance_file.write("\n".join(generate_training_data()))
