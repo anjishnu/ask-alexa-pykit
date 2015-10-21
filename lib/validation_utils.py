@@ -20,8 +20,7 @@ def linux_cmd(cmd_str):
 
 def valid_alexa_request(headers_map, request_body, disable_timestamp_validation=True):
     '''                                                                                                                                                                  
-    Utility function to validate headers                                                                                                                                  
-    '''
+    Utility function to validate headers                                                                                                                                     '''
     if not os.path.isdir("tmp"):
         os.makedirs("tmp")
 
@@ -51,7 +50,8 @@ def valid_alexa_request(headers_map, request_body, disable_timestamp_validation=
             and is_cert_valid and is_signature_verified)
 
 def valid_timestamp(timestamp_str):
-    "timestamp_str format: '2015-08-29T22:22:37Z' "
+    """ Validate the timestamp to ensure that it is valid
+    timestamp_str format: '2015-08-29T22:22:37Z' """
 
     #No idea why my time is offset by this amount... server time drift?
     mysterious_delta = 296
@@ -107,6 +107,9 @@ def extract_public_key(cert_file, public_key_file):
                                                                                         public_key_file=public_key_file))
 
 def valid_cert_text(cert_text):
+    """
+    Validate the text of the certificate
+    """
     cert_lines = cert_text.split("\n")    
     certificate_not_expired = False
     certificate_has_dns = False

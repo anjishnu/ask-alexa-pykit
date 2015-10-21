@@ -2,7 +2,7 @@ import os
 from collections import OrderedDict
 import json
 
-raw_response = """
+RAW_RESPONSE = """
 {
     "version": "1.0",
     "response": {
@@ -15,15 +15,22 @@ raw_response = """
 }"""
 
 class VoiceHandler(object):
-
+    """
+    Decorator to store function metadata
+    """
     def __init__(self, **kwargs):
         self.kwargs = kwargs
 
-    def __call__(self, f):
-        f.voice_handler = self.kwargs
-        return f
+    def __call__(self, function):
+        function.voice_handler = self.kwargs
+        return function
 
+    
 class Request(object):
+    """
+    Simple wrapper around the JSON request
+    received by the module
+    """    
     def __init__(self, request_dict):
         self.request = request_dict
         
@@ -53,17 +60,17 @@ class Request(object):
             return self.request['request']['intent']['slots'].keys()
         except:            
             return []
-        
+
+    def get_slot_map(self):
+        return {slot_name : request.get_slot_value(slot_name) for slot_name in self.get_slot_names}
+
+    
 class ResponseBuilder(object):
     """
-    This is a generic superclass to handle basic json operations for all response constructions
+    Simple class to help users to build responses
     """
-    base_response = eval(raw_response)
-    
-    def __init__(self, request):
-        self.request = request
-        self.request_type = request.request_type()
-    
+    base_response = eval(RAW_RESPONSE)
+        
     def create_response(self, message=None, end_session=False, card_obj=None):
         """
         message - text message to be spoken out by the Echo
@@ -100,17 +107,3 @@ class ResponseBuilder(object):
 
     def set_card_info(self, card_info):
         raise NotImplementedError
-
-    
-class IntentResponseBuilder(ResponseBuilder):
-    """ This class responds to an intent given a response """
-    def __init__(self, request):
-        self.request = request
-        self.request_type = request.request_type()
-        self.intent = request.intent_name()
-        self.slots = request.get_slot_names()
-        
-    def get_slot_map(self, request):
-        """"Utility function that returns a dictionary mapping slot type to its value for this intent """
-        return {slot_name : request.get_slot_value(slot_name) for slot_name in self.slots}
-    
