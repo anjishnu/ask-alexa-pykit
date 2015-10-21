@@ -16,7 +16,7 @@ def default_handler(request):
 
 @VoiceHandler(request_type="LaunchRequest")
 def launch_request_handler(request):
-    return r.create_response(message="Hello world!")
+    return r.create_response(message="Hello Welcome to My Recipes!")
 
 
 @VoiceHandler(request_type="SessionEndedRequest")
@@ -24,22 +24,21 @@ def session_ended_request_handler(request):
     return r.create_response(message="Goodbye!")
 
 
-@VoiceHandler(intent='CallDadIntent')
-def call_dad_intent_handler(request):
+@VoiceHandler(intent='GetRecipeIntent')
+def get_recipe_intent_handler(request):
 
-    phone_number = request.get_slot_value('PhoneNo')
-    phone_number = phone_number if phone_number else "NULL"    
-
+    ingredient = request.get_slot("Ingredient")
+    ingredient = ingredient if ingredient else ""
     card = r.create_card(title="CallDadIntent Activated",
                          subtitle=None,
-                         content="used echo to call dad on {phone_no}"
-                         .format(str(phone_number)))
+                         content="used echo to call dad on {}"
+                         .format(ingredient))
     
     return response_builder.create_response(message="Calling dad now...",
                                             end_session=False,
                                             card_obj=card)
 
 
-@VoiceHandler(intent="CallBack")
-def call_back_intent_handler(r):
-    return r.create_response(message="Initiating CallBack")
+@VoiceHandler(intent="NextRecipeIntent")
+def call_back_intent_handler(request):
+    return r.create_response(message="Getting Next Recipe")

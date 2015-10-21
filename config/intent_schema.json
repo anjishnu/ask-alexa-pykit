@@ -1,32 +1,17 @@
 {
     "intents": [
         {
-            "intent": "CallDadIntent",
+            "intent": "GetRecipeIntent",
             "slots": [
-                [
-                    {
-                        "name": "PhoneNo",
-                        "type": "NUMBER"
-                    }
-                ],
-                [
-                    {
-                        "name": "CallTime",
-                        "type": "TIME"
-                    }
-                ]
+                {
+                    "name": "Ingredient",
+                    "type": "LITERAL"
+                }
             ]
         },
         {
-            "intent": "CallBack",
-            "slots": [
-                [
-                    {
-                        "name": "Name",
-                        "type": "LITERAL"
-                    }
-                ]
-            ]
+            "intent": "NextRecipeIntent",
+            "slots": []
         }
     ]
 }
