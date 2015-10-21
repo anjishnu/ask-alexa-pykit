@@ -1,6 +1,9 @@
 import json
-from collections import defaultdict as ddict
-from lib.dialog_utilities import RequestHandler, SimpleIntentHandler, Request
+from collections import defaultdict 
+from lib.dialog_utils import ResponseBuilder, IntentResponseBuilder, Request
+import pkgutil
+import handlers
+import inspect
 
 DEFAULT_INTENT_SCHEMA_LOCATION = "config/intent_schema.json"
 NON_INTENT_REQUESTS = ["LaunchRequest", "SessionEndedRequest"]
@@ -10,46 +13,35 @@ def load_intent_schema(schema_location = DEFAULT_INTENT_SCHEMA_LOCATION):
                 return json.load(intentfile)
 
             
-def set_up_handlers_for_intents():
-    """
-    Sets up handlers for intents based on an intent schema
-    """
-    handler_for_intent = {}
-    intent_schema = load_intent_schema()
-    for intent in intent_schema["intents"]:
-        intent_name = intent["intent"]
-        slots = {slot["name"] for slot in intent["slots"]}        
-        intent_handler = SimpleIntentHandler(intent_name=intent_name,
-                                             response_text="Hello World!",
-                                             slots=slots)
-        handler_for_intent[intent_name] = intent_handler
-    return handler_for_intent
-
-
 def set_up_handlers():
-    handlers_map = {}
-    handlers_map["IntentRequest"] = set_up_handlers_for_intents()
-    #Handlers for LaunchAppRequest and SessionEndedRequest
-    for request_type in NON_INTENT_REQUESTS:
-        handlers_map[request_type] = RequestHandler(request_type=request_type,
-                                                    response_text = "Just ask.")
-    return handlers_map
+    #If no handler is specified, backoff to default handler 
+    init_default_handler = lambda : handlers.default_handler
+    all_handlers_map = defaultdict(init_default_handler)
+    intent_handlers_map = defaultdict(init_default_handler)
 
+    #Loading intent schema 
+    intent_schema = load_intent_schema()
+    all_intents = {intent["intent"] : { slot["name"] : slot["type"] for slot in intent['slots'] }
+                   for intent in intent_schema['intents'] }
 
-def update_handlers(all_handlers):
-    """
-    # This is an example of how modify intent handlers
+    print (json.dumps(all_intents, indent=4))    
 
-    #This gives you access to the handler for ExitIntent
-    handler = all_handlers["IntentRequest"]["ExitIntent"]    
+    member_functions = inspect.getmembers(module, inspect.isfunction)
 
-    #This changes the message of the handler!
-    handler.set_message("Goodbye")
-    
-    # This sets the voice response of alexa to "GoodBye" whenever it sees an "ExitIntent"    
-    return handler_for_intent
-    """
-    return all_handlers
+    for (name, function) in member_functions:
+        if hasattr(function, 'voice_handler'): #Function has been decorated as a voice_handler
+
+            if 'request_type' in function.voice_handler:
+                if function.voice_handler['request_type'] in NON_INTENT_REQUESTS: 
+                    all_handlers_map[f.voice_handler['request_type']] = function
+                    
+            elif 'intent' in function.voice_handler:
+                if function.voice_handler['intent'] in all_intents:
+                    intent_handler_map[function.voice_handler['intent']] = function 
+
+    # Attach intent handler to main handlers map
+    all_handlers_map['IntentRequest'] = intent_handlers_map                
+    return all_handlers_map
 
 
 """
@@ -60,7 +52,7 @@ handler = HANDLERS["IntentRequest"][INTENT_NAME]
 gives you the appropriate handler.
 """    
 
-HANDLERS = set_up_handlers()
+REGISTERED_HANDLERS = initialize_handlers()
 
 
 def route_intent(request_json):
@@ -68,7 +60,7 @@ def route_intent(request_json):
     This code routes requests to the appropriate handler
     """
     request = Request(request_json)    
-    handler = HANDLERS[request.request_type()]
+    handler = REGISTERED_HANDLERS[request.request_type()]
     if request.intent_name():
         handler = handler[request.intent_name()]
     return handler.get_response(request)

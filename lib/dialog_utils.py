@@ -14,6 +14,14 @@ raw_response = """
     }
 }"""
 
+class VoiceHandler(object):
+
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
+
+    def __call__(self, f):
+        f.voice_handler = self.kwargs
+        return f
 
 class Request(object):
     def __init__(self, request_dict):
@@ -39,27 +47,22 @@ class Request(object):
         except:
             """Value not found"""
             return None
-    
-class RequestHandler(object):
+
+    def get_slot_names(self):
+        try:
+            return self.request['request']['intent']['slots'].keys()
+        except:            
+            return []
+        
+class ResponseBuilder(object):
     """
     This is a generic superclass to handle basic json operations for all response constructions
     """
     base_response = eval(raw_response)
     
-    def __init__(self, request_type, response_text):
-        self.request_type = request_type
-        self.response_text = response_text
-    
-    def get_response(self, request):
-        return self._process_request(request)
-
-    def _process_request(self, request):
-        """
-        This is the function you should overload to 
-        do all sorts of processing to generate the artifacts
-        that are fed into self.create_response
-        """
-        return self.create_response(message=self.response_text)
+    def __init__(self, request):
+        self.request = request
+        self.request_type = request.request_type()
     
     def create_response(self, message=None, end_session=False, card_obj=None):
         """
@@ -80,10 +83,10 @@ class RequestHandler(object):
         card_obj = JSON card object to substitute the 'card' field in the raw_response
         format: 
         {
-        "type": "Simple", #COMPULSORY
-        "title": "string", #OPTIONAL
-        "subtitle": "string", #OPTIONAL
-        "content": "string" #OPTIONAL
+          "type": "Simple", #COMPULSORY
+          "title": "string", #OPTIONAL
+          "subtitle": "string", #OPTIONAL
+          "content": "string" #OPTIONAL
         }
         """
         card = {"type":"Simple"}
@@ -99,17 +102,15 @@ class RequestHandler(object):
         raise NotImplementedError
 
     
-class SimpleIntentHandler(RequestHandler):
+class IntentResponseBuilder(ResponseBuilder):
     """ This class responds to an intent given a response """
-    def __init__(self, intent_name, response_text = "Hello World", slots = []):
-        self.request_type = "IntentRequest"
-        self.intent = intent_name
-        self.response_text = response_text
-        self.slots = []
+    def __init__(self, request):
+        self.request = request
+        self.request_type = request.request_type()
+        self.intent = request.intent_name()
+        self.slots = request.get_slot_names()
         
     def get_slot_map(self, request):
         """"Utility function that returns a dictionary mapping slot type to its value for this intent """
         return {slot_name : request.get_slot_value(slot_name) for slot_name in self.slots}
-
-
     
