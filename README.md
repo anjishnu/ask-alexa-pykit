@@ -3,7 +3,25 @@ Super simple Python starter code for developing apps for the Amazon Echo's  SDK 
 Check the scripts in the scripts folder for utility code on how to get started with building the config files used by the ASK.
 Run ./install.sh to download the python dependencies needed for this project. Currently the install.sh script is designed for a Ubuntu style Linux platform, but take a look inside, porting it over to Mac or Windows should be pretty trivial if you have python installed. 
 
-Check out https://github.com/anjishnu/ask-alexa-pykit/blob/master/EC2HOWTO.md for instructions on how to deploy this server on an EC2 instance. 
+Check out https://github.com/anjishnu/ask-alexa-pykit/blob/master/EC2_setup_tutorial.md for instructions on how to deploy this server on an EC2 instance. 
+
+# What's new?
+
+ask-alexa-pykit is currently at version 0.3
+  Latest changes:
+- The main changes between v0.2 - v0.3 is the removal of the RequestHandler class, I started finding the design of that class was not very modular and didn't seem to lend itself well to easy use since it would have to be subclassed to add significantly new functionality. Instead I divided up the function of the RequestHandler into 3 simple APIs - the Request, the VoiceHandler function, and the ResponseBuilder.
+    
+- The Request object contains information about the Alexa request - such as intent, slots, userId etc.
+    
+- A VoiceHandler function (specified with an annotation) takes a request as an input, performs some arbitrary logic on top of it, and returns a Response.
+    
+- The ResponseBuilder is an encapsulated way to construct responses for a VoiceHandler. A Response can be constructed by called ResponseBuilder.create_response.
+    
+- This way each part of the code has an unambiguous responsbility, hopefully leading to an extremely easy API.
+    
+- I had to do a little magic using the inspect module in dialog.py to make it happen, hopefully the code is not too hard to understand. 
+    
+- Check out voice handlers for the new way to map a VoiceHandler to an intent - the new Handlers are more like AWS Lambda functions. When writing a new skill, you can simply copy this code, generate the intent schema and fill out some custom functions in the voice_handlers.py file.
 
 Step 1:
 -----
