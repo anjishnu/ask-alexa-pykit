@@ -77,7 +77,7 @@ Step 5:
 Start the server
 
 <b>
-$ sudo python3 cherrypyserver.py
+$ sudo python3 server.py
 </b>
 
 This launches the cherrypy server to handle the apps. The server generates response handlers automatically from the intent schema.
