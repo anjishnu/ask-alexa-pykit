@@ -5,7 +5,7 @@ Run ./install.sh to download the python dependencies needed for this project. Cu
 
 Check out https://github.com/anjishnu/ask-alexa-pykit/blob/master/EC2_setup_tutorial.md for instructions on how to deploy this server on an EC2 instance. 
 
-To modify it for your own use cases, simply generate training data and an intent schema definition using the scripts in the scripts/ folder (note, there's a README in that folder as well) and modify <b>voice_handlers.py</b> to add handler functions for the intents and requests that your skill supports. 
+To use this code for your own skill, simply generate training data and an intent schema definition using the scripts in the scripts/ folder (note, there's a README in that folder as well) and modify <b>voice_handlers.py</b> to add handler functions for the intents and requests that your skill supports. 
 
 # What's new?
 
