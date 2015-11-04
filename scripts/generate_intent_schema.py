@@ -6,11 +6,21 @@ empty_schema = """{"intents": []}"""
 
 intent_schema_path = "../config/intent_schema.json"
 
-slot_type_mappings = { 1 : ["LITERAL", "Description: " "passes the words for the slot value with no conversion"],
-                       2 : ["NUMBER", "Description: " 'converts numeric words (five) into digits (such as 5)'],
-                       3 : ["DATE", "Description: " 'converts words that indicate dates (today, tomorrow, or july) into a date format (such as 2015-07-00T9)'],
-                       4 : ["TIME", "Description: " 'converts words that indicate time (four in the morning, two p m) into a time value (16:00).'],
-                       5 : ["DURATION", "Description: " 'converts words that indicate durations (five minutes) into a numeric duration (5M).']}
+slot_type_mappings = {
+
+    1 : ["AMAZON.LITERAL",
+         "Description: " "passes the words for the slot value with no conversion"],
+    2 : ["AMAZON.NUMBER",
+         "Description: " 'converts numeric words (five) into digits (such as 5)'],
+    3 : ["AMAZON.DATE", "Description: "
+         'converts words that indicate dates (today, tomorrow, or july) into a date format (such as 2015-07-00T9)'],
+    4 : ["AMAZON.TIME",
+         "Description: " 'converts words that indicate time (four in the morning, two p m) into a time value (16:00).'],
+    5 : ["AMAZON.DURATION",
+         "Description: " 'converts words that indicate durations (five minutes) into a numeric duration (5M).']
+    6 : ["AMAZON.US_CITY",
+         "Description: Improves slot performance on all major US cities"]
+}
 
 def new_intent_schema():
     return append_to_schema(json.loads(empty_schema))
