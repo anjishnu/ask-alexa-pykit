@@ -2,8 +2,6 @@ import cherrypy
 import json
 import dialog
 from lib.validation_utils import valid_alexa_request
-
-"""Verification"""
 from urllib.parse import urlparse
 import os
 import subprocess
@@ -35,4 +33,5 @@ if __name__ == "__main__":
     print (json.dumps(server_config, indent=4))    
     config = {"global": server_config}    
     cherrypy.config.update(server_config)
-    cherrypy.quickstart(SkillResponse(), config=config)
+    root_node = SkillResponse()
+    cherrypy.quickstart(root_node, config=config)

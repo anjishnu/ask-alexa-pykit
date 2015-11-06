@@ -71,21 +71,31 @@ class ResponseBuilder(object):
     """
     base_response = eval(RAW_RESPONSE)
         
-    def create_response(self, message=None, end_session=False, card_obj=None):
+    def create_response(self, message=None, end_session=False, card_obj=None, reprompt=None):
         """
         message - text message to be spoken out by the Echo
         end_session - flag to determine whether this interaction should end the session
         card_obj = JSON card object to substitute the 'card' field in the raw_response
         """
         response = self.base_response
+
         if message:
-            response['response']['outputSpeech']['text'] = message
-        response['response']['shouldEndSession'] = end_session
+            response['response']['outputSpeech'] = self.create_output_speech(message)
+        if reprompt:
+            response['reprompt']['outputSpeech'] = self.create_output_speech(reprompt)        
         if card_obj:
             response['response']['card'] = card_obj
+
+        response['response']['shouldEndSession'] = end_session
         return response
 
-    def create_card(self, title=None, subtitle=None, content=None, card_type="Simple"):
+    def create_output_speech(self, text, type="Simple", ssml=None):
+        output_speech = {"type" : type,
+                         "text" : text }
+        if ssml:
+            output_speech['ssml'] = ssml
+    
+    def create_card(self, title=None, subtitle=None, content=None):
         """
         card_obj = JSON card object to substitute the 'card' field in the raw_response
         format: 

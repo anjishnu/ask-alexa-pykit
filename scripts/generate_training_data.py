@@ -40,6 +40,17 @@ def validate_input_format(utterance, intent):
                 return False
     return True
 
+def lowercase_utterance(utterance):
+    split_utt = re.split("({.*})", utterance)
+    def lower_case_split(token):
+        if "|" in token:
+            phrase, slot = token.split("|")
+            return "|".join([phrase.strip().lower(), slot.strip()])
+        else:
+            return token.lower()
+    return " ".join([lower_case_split(token) for token in split_utt])
+    
+        
 
 def generate_training_data(intent_schema = DEFAULT_INTENT_SCHEMA_LOCATION):
     with open(intent_schema) as input_file:
@@ -57,7 +68,7 @@ def generate_training_data(intent_schema = DEFAULT_INTENT_SCHEMA_LOCATION):
             elif utterance.strip() == "<":
                 print (" - Discarded utterance: ", training_data.pop())
             elif validate_input_format(utterance, intent):
-                training_data.append("\t".join([intent["intent"], utterance.lower()]))
+                training_data.append("\t".join([intent["intent"], lowercase_utterance(utterance)]))
             else:
                 print (" - Discarded utterance:", utterance)
     return training_data                
