@@ -71,31 +71,21 @@ class ResponseBuilder(object):
     """
     base_response = eval(RAW_RESPONSE)
         
-    def create_response(self, message=None, end_session=False, card_obj=None, reprompt=None):
+    def create_response(self, message=None, end_session=False, card_obj=None):
         """
         message - text message to be spoken out by the Echo
         end_session - flag to determine whether this interaction should end the session
         card_obj = JSON card object to substitute the 'card' field in the raw_response
         """
         response = self.base_response
-
         if message:
-            response['response']['outputSpeech'] = self.create_output_speech(message)
-        if reprompt:
-            response['reprompt']['outputSpeech'] = self.create_output_speech(reprompt)        
+            response['response']['outputSpeech']['text'] = message
+        response['response']['shouldEndSession'] = end_session
         if card_obj:
             response['response']['card'] = card_obj
-
-        response['response']['shouldEndSession'] = end_session
         return response
 
-    def create_output_speech(self, text, type="Simple", ssml=None):
-        output_speech = {"type" : type,
-                         "text" : text }
-        if ssml:
-            output_speech['ssml'] = ssml
-    
-    def create_card(self, title=None, subtitle=None, content=None):
+    def create_card(self, title=None, subtitle=None, content=None, card_type="Simple"):
         """
         card_obj = JSON card object to substitute the 'card' field in the raw_response
         format: 
@@ -117,3 +107,57 @@ class ResponseBuilder(object):
 
     def set_card_info(self, card_info):
         raise NotImplementedError
+
+
+class VoiceQueue(object):
+    """
+    Encapsulates voice interaction metadata for a single user
+    """
+    def __init__(self, raw_queue = []):
+        self.queue = raw_queue[::-1]
+        self.prev = None
+
+    def is_empty(self):
+        return True if self.queue else False
+
+    def next_response(self):
+        self.prev = self.queue.pop()
+        return self.prev
+
+    def previous_response(self):
+        return self.prev
+
+    def extend(self, text_lst):
+        self.queue = text_lst[::-1].extend(self.queue)
+
+    def append(self, text):
+        self.queue = [text] + self.queue
+
+
+class VoiceCache(object):
+    """
+    Dictionary like cache to encapsulate retrieval of voice
+    interaction metadata for all users
+    Over time this can evolve under the hood to become more like LRU 
+    with some kind of filesystem backing. 
+    """
+    def __init__(self):
+        self.queues = defaultdict(lambda : NextQueue())
+
+    def __setitem__(self, key, item):
+        self.queues[key] = NextQueue(item)
+
+    def __getitem__(self, key):
+        return self.queues[key]
+
+    def __repr__(self):
+        return repr(self.queues)
+
+    def __len__(self):
+        return len(self.queues)
+
+    def __delitem__(self, key):
+        del self.queues[key]
+
+    def clear(self):
+        return self.queues.clear()
