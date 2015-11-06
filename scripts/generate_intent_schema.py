@@ -17,7 +17,7 @@ def new_intent_schema():
 
 def add_to_existing_schema():
     with open(intent_schema_path, 'r') as infile:
-        current_schema = infile.read()
+        current_schema = json.load(infile)
     return append_to_schema(current_schema)
 
 def append_to_schema(current_schema):
