@@ -85,7 +85,7 @@ class ResponseBuilder(object):
             response['response']['card'] = card_obj
         return response
 
-    def create_card(self, title=None, subtitle=None, content=None):
+    def create_card(self, title=None, subtitle=None, content=None, card_type="Simple"):
         """
         card_obj = JSON card object to substitute the 'card' field in the raw_response
         format: 
@@ -96,7 +96,7 @@ class ResponseBuilder(object):
           "content": "string" #OPTIONAL
         }
         """
-        card = {"type":"Simple"}
+        card = {"type": card_type}
         if title: card["title"] = title
         if subtitle: card["subtitle"] = subtitle
         if content: card["content"] = content
