@@ -1,11 +1,14 @@
 # ask-alexa-pykit
+
+Version 0.3
+
 Super simple Python starter code for developing apps for the Amazon Echo's  SDK - ASK:  Alexa Skills Kit.
 Check the scripts in the scripts folder for utility code on how to get started with building the config files used by the ASK.
 Run ./install.sh to download the python dependencies needed for this project. Currently the install.sh script is designed for a Ubuntu style Linux platform, but take a look inside, porting it over to Mac or Windows should be pretty trivial if you have python installed. 
 
 Check out https://github.com/anjishnu/ask-alexa-pykit/blob/master/EC2_setup_tutorial.md for instructions on how to deploy this server on an EC2 instance. 
 
-To use this code for your own skill, simply generate training data and an intent schema definition using the scripts in the scripts/ folder (note, there's a README in that folder as well) and modify <b>voice_handlers.py</b> to add handler functions for the intents and requests that your skill supports. 
+To use this code for your own skill, simply generate training data, security tokens and an intent schema definition using the scripts in the scripts/ folder (note, there's a README in that folder as well) and edit <b>voice_handlers.py</b> to add handler functions for the intents and requests that your skill supports - this should be enough to get started. This package is designed so that you can treat the code in utils, server.py and dialog.py as a black box as far as your application is concerned and work with a simple annotated-function interface.
 
 # What's new?
 
