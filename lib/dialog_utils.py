@@ -1,5 +1,5 @@
 import os
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 import json
 
 RAW_RESPONSE = """
@@ -45,6 +45,13 @@ class Request(object):
     def user_id(self):
         return self.request["session"]["user"]["userId"]
 
+    def access_token(self):
+        try:
+            return self.request['session']['user']['accessToken']
+        except:
+             return None
+
+
     def session_id(self):
         return self.request["session"]["sessionId"]
 
@@ -62,7 +69,7 @@ class Request(object):
             return []
 
     def get_slot_map(self):
-        return {slot_name : request.get_slot_value(slot_name) for slot_name in self.get_slot_names}
+        return {slot_name : self.get_slot_value(slot_name) for slot_name in self.get_slot_names()}
 
     
 class ResponseBuilder(object):
@@ -70,7 +77,8 @@ class ResponseBuilder(object):
     Simple class to help users to build responses
     """
     base_response = eval(RAW_RESPONSE)
-        
+       
+    @classmethod
     def create_response(self, message=None, end_session=False, card_obj=None):
         """
         message - text message to be spoken out by the Echo
@@ -84,7 +92,8 @@ class ResponseBuilder(object):
         if card_obj:
             response['response']['card'] = card_obj
         return response
-
+     
+    @classmethod
     def create_card(self, title=None, subtitle=None, content=None, card_type="Simple"):
         """
         card_obj = JSON card object to substitute the 'card' field in the raw_response
@@ -102,11 +111,6 @@ class ResponseBuilder(object):
         if content: card["content"] = content
         return card
 
-    def set_response_text(self, response_text):
-        self.response_text = response_text
-
-    def set_card_info(self, card_info):
-        raise NotImplementedError
 
 
 class VoiceQueue(object):
@@ -118,10 +122,11 @@ class VoiceQueue(object):
         self.prev = None
 
     def is_empty(self):
-        return True if self.queue else False
+        return False if self.queue else True
 
     def next_response(self):
         self.prev = self.queue.pop()
+        print (self.queue)
         return self.prev
 
     def previous_response(self):
@@ -142,10 +147,10 @@ class VoiceCache(object):
     with some kind of filesystem backing. 
     """
     def __init__(self):
-        self.queues = defaultdict(lambda : NextQueue())
+        self.queues = defaultdict(lambda : VoiceQueue())
 
     def __setitem__(self, key, item):
-        self.queues[key] = NextQueue(item)
+        self.queues[key] = VoiceQueue(item)
 
     def __getitem__(self, key):
         return self.queues[key]
@@ -161,3 +166,14 @@ class VoiceCache(object):
 
     def clear(self):
         return self.queues.clear()
+
+
+def chunk_list(input_list, chunksize):
+    """ Helped function to chunk a list 
+    >>> lst = [1,2,3,4,5,6]
+    >>> chunk_list(lst)
+    [[1,2],[3,4],[5,6]]
+    """    
+    return [input_list[start : end] for start, end
+              in zip(range(0, len(input_list), chunksize),
+                     range(chunksize, len(input_list), chunksize))]

@@ -7,7 +7,7 @@ Each VoiceHandler function receives a ResponseBuilder object as input and output
 A response object is defined as the output of ResponseBuilder.create_response()
 """
 
-r = ResponseBuilder()
+r = ResponseBuilder
 
 def default_handler(request):
     """ The default handler gets invoked if no handler is set for a request """

@@ -5,13 +5,8 @@ from lib.dialog_utils import Request
 import pkgutil
 import voice_handlers
 import inspect
+from config.config import INTENT_SCHEMA, NON_INTENT_REQUESTS
 
-DEFAULT_INTENT_SCHEMA_LOCATION = "config/intent_schema.json"
-NON_INTENT_REQUESTS = ["LaunchRequest", "SessionEndedRequest"]
-
-def load_intent_schema(schema_location = DEFAULT_INTENT_SCHEMA_LOCATION):
-    with open(schema_location, 'r') as intentfile:
-                return json.load(intentfile)
 
             
 def initialize_handlers():
@@ -22,11 +17,10 @@ def initialize_handlers():
     init_default_handler = lambda : voice_handlers.default_handler
     all_handlers_map = defaultdict(init_default_handler)
     intent_handlers_map = defaultdict(init_default_handler)
-
+    
     # Load intent schema to verify that handlers are mapped to valid intents
-    intent_schema = load_intent_schema()
     all_intents = {intent["intent"] : { slot["name"] : slot["type"] for slot in intent['slots'] }
-                   for intent in intent_schema['intents'] }
+                   for intent in INTENT_SCHEMA['intents'] }
 
     #Loaded functions in the handlers module
     member_functions = inspect.getmembers(voice_handlers, inspect.isfunction)
@@ -48,10 +42,10 @@ def initialize_handlers():
 
 
 """
-The HANDLERS global variable contains a python dict 
+The REGISTERED_HANDLERS global variable contains a python dict 
 which contains mappings from the intent name to the handler
 e.g. 
-handler = HANDLERS["IntentRequest"][INTENT_NAME]
+handler = REGISTERED_HANDLERS["IntentRequest"][INTENT_NAME]
 gives you the appropriate handler.
 """    
 
