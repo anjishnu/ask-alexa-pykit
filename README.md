@@ -77,7 +77,21 @@ This script prompts you to enter valid training data in the format defined by th
 
 Once you are done, this script generates a file called utterance.txt with all your training data in it, ready to be uploaded to your skill: https://developer.amazon.com/edw/home.html#/skills
 
-Step 5:
+Step 5: Add your business logic
+--------------
+Go to <b> voice_handlers.py </b> and add handler functions to the code for your specific request or intent.
+This is what a handler function for NextRecipeIntent looks like. Note: a handler function will only be activated when the intent schema in the config/ folder is updated to include the intent it is handling. 
+
+    @VoiceHandler(intent="NextRecipeIntent")
+    def call_back_intent_handler(request):
+      """
+      You can insert arbitrary business logic code here
+      """
+      return r.create_response(message="Getting Next Recipe ...")
+
+
+
+Step 6: Running your code as a server.
 --------------
 Start the server
 
