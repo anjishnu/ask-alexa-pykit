@@ -106,14 +106,15 @@ Look into the code in dialog.py for details on how the intents are handled.
 Contributing
 ---------------
 
-The master branch is meant to be stable. I usually work on unstable stuff on a personal branch.
-Fork the master branch ( https://github.com/[my-github-username]/ask-alexa-pykit/fork )
-Create your branch (git checkout -b my-branch)
-Commit your changes (git commit -am 'added fixes for something')
-Push to the branch (git push origin my-branch)
-Create a new Pull Request
-And you're done!
-Bug fixes, bug reports and new documentation are all appreciated!
+- The master branch is meant to be stable. I usually work on unstable stuff on a personal branch.
+- Fork the master branch ( https://github.com/[my-github-username]/ask-alexa-pykit/fork )
+- Create your branch (git checkout -b my-branch)
+- Commit your changes (git commit -am 'added fixes for something')
+- Push to the branch (git push origin my-branch)
+- Create a new Pull Request
+- And you're done!
+
+- Bug fixes, bug reports and new documentation are all appreciated!
 
 Notes:
 --------------
