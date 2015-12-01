@@ -92,7 +92,7 @@ class ResponseBuilder(object):
         response['response']['shouldEndSession'] = end_session
         if card_obj:
             response['response']['card'] = card_obj
-        if reprompt:
+        if reprompt_message:
             response['reprompt'] = self.create_speech(reprompt_message, is_ssml)
         return response
     
