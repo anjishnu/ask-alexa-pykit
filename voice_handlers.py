@@ -4,7 +4,7 @@ from alexa.ask.utils import VoiceHandler, ResponseBuilder as r
 In this file we specify default event handlers which are then populated into the handler map using metaprogramming
 Copyright Anjishnu Kumar 2015
 
-Each VoiceHandler function receives a ResponseBuilder object as input and outputs a Response object 
+Each VoiceHandler function receives a Request object as input and outputs a Response object 
 A response object is defined as the output of ResponseBuilder.create_response()
 """
 
