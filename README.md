@@ -34,11 +34,15 @@ Step 1: Download Code
 
 Make sure you're in a python lambda release branch. E.g.
 
-<b>$ git checkout python_lambda_0.3_release </b>
+<b>
+$ cd ask-alexa-pykit 
+<br>
+$ git checkout python_lambda_0.3_release </b>
 
 
-Step 2: Create a intent schema for your app (Skip this for uploading basic Hello World example)
+Step 2: Create a intent schema for your app 
 ----------
+Skip this if you're trying the included basic example.
 
 <b>
 $ python3 generate_intent_schema.py
@@ -49,7 +53,7 @@ After the process is complete, it asks you whether you the intent schema moved t
 
 Step 3: Generate training data and upload to Amazon. 
 --------------
- Skip to 3(b) if simply trying to run hello-world example.
+Skip to 3(b) if simply trying to run example.
 3(a):
 Create a file containing your training examples and upload to Amazon. 
 I've created a script which loads in the intent schema and does some validation and prompting while you type utterances, but I haven't played around with it enough to know if it actually helps.
@@ -61,8 +65,11 @@ This script prompts you to enter valid training data in the format defined by th
 3(b):
 Once you are done, this script generates a file called utterance.txt with all your training data in it, ready to be uploaded to your skill: https://developer.amazon.com/edw/home.html#/skills
 
-Step 4: Add your business logic (Skip if just trying to run sample)
+Step 4: Add your business logic 
 --------------
+
+Skip this if you're just trying to run the included basic example.
+
 Go to <b> voice_handlers.py </b> and add handler functions to the code for your specific request or intent.
 This is what a handler function for NextRecipeIntent looks like. Note: a handler function will only be activated when the intent schema in the config/ folder is updated to include the intent it is handling. 
 
