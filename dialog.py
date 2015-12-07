@@ -25,6 +25,8 @@ def ask_lambda(request_json, context):
     """
     request = Request(request_json)
     voice_handler = REGISTERED_HANDLERS[request.request_type()]
-    if request.intent_name():
+    if request.intent_name() in voice_handler:
         voice_handler = voice_handler[request.intent_name()]
+    else:
+        voice_handler = voice_handlers.default_handler
     return voice_handler(request)
