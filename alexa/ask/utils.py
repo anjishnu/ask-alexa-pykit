@@ -1,6 +1,9 @@
 import os
 from collections import OrderedDict, defaultdict
 import json
+import pkgutil
+import inspect
+
 
 RAW_RESPONSE = """
 {
@@ -14,9 +17,12 @@ RAW_RESPONSE = """
     }
 }"""
 
+
 class VoiceHandler(object):
     """
     Decorator to store function metadata
+    Functions that are annotated with this label are 
+    treated as voice handlers
     """
     def __init__(self, **kwargs):
         self.kwargs = kwargs
@@ -26,6 +32,33 @@ class VoiceHandler(object):
         return function
 
     
+def initialize_handlers(voice_handlers, INTENT_SCHEMA, NON_INTENT_REQUESTS):
+    """
+    Automatically populate function handlers from the handlers in the voice_handlers module
+    """
+    # If no handler is specified, backoff to default handler
+    init_default_handler = lambda : voice_handlers.default_handler
+    all_handlers_map = defaultdict(init_default_handler)
+    intent_handlers_map = defaultdict(init_default_handler)    
+    # Load intent schema to verify that handlers are mapped to valid intents
+    all_intents = {intent["intent"] : { slot["name"] : slot["type"] for slot in intent['slots'] }
+                   for intent in INTENT_SCHEMA['intents'] }    
+    #Loaded functions in the handlers module
+    member_functions = inspect.getmembers(voice_handlers, inspect.isfunction)    
+    for (name, function) in member_functions:
+        if hasattr(function, 'voice_handler'): #Function has been decorated as a voice_handler
+            if 'request_type' in function.voice_handler:
+                if function.voice_handler['request_type'] in NON_INTENT_REQUESTS:
+                    # Function is a valid request voice handler
+                    all_handlers_map[function.voice_handler['request_type']] = function
+            elif 'intent' in function.voice_handler:
+                if function.voice_handler['intent'] in all_intents:
+                    # Function is a valid intent voice handler
+                    intent_handlers_map[function.voice_handler['intent']] = function                        
+    all_handlers_map['IntentRequest'] = intent_handlers_map
+    return all_handlers_map
+
+
 class Request(object):
     """
     Simple wrapper around the JSON request
@@ -50,7 +83,6 @@ class Request(object):
             return self.request['session']['user']['accessToken']
         except:
              return None
-
 
     def session_id(self):
         return self.request["session"]["sessionId"]
@@ -124,8 +156,6 @@ class ResponseBuilder(object):
         if subtitle: card["subtitle"] = subtitle
         if content: card["content"] = content
         return card
-
-
 
 
 def chunk_list(input_list, chunksize):

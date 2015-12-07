@@ -15,15 +15,6 @@ def load_json_schema(schema_location):
     with open(schema_location, 'r') as json_file:
         return json.load(json_file)
 
-
-# --- CherryPyServer related configurations ---
-
-SERVER_CONFIG_PATH = path_relative_to_file("server_config.json")
-
-SERVER_CONFIG = load_json_schema(SERVER_CONFIG_PATH)
-print ("Loaded server config file:")
-
-
 # --- AMAZON related configurations ---
 
 
@@ -38,5 +29,3 @@ DEFAULT_INTENT_SCHEMA_LOCATION = path_relative_to_file("intent_schema.json")
 NON_INTENT_REQUESTS = ["LaunchRequest", "SessionEndedRequest"]
 
 INTENT_SCHEMA = load_json_schema(DEFAULT_INTENT_SCHEMA_LOCATION)
-
-
