@@ -17,7 +17,7 @@ REGISTERED_HANDLERS = initialize_handlers(voice_handlers,
                                           INTENT_SCHEMA,
                                           NON_INTENT_REQUESTS)
 
-def ask_lambda(request_json, context):
+def lambda_handler(request_json, context):
     """
     This code routes requests to the appropriate handler
     request_json : This is the json received by the alexa skill
