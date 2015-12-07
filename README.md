@@ -27,9 +27,14 @@ ask-alexa-pykit is currently at version 0.3
 
 Step 1: Download Code
 -----------
+
+
 <b>$ git clone https://github.com/anjishnu/ask-alexa-pykit.git </b>
 
-Make sure you're in a python lambda release branch. E.g.$ git checkout python_lambda_0.3_release 
+
+Make sure you're in a python lambda release branch. E.g.
+
+<b>$ git checkout python_lambda_0.3_release </b>
 
 
 Step 2: Create a intent schema for your app
@@ -73,12 +78,13 @@ Package the code folder for AWS Lambda. Detailed instructions are here: http://d
 For the basic hello world example simply zip the folder:
 <b>
 $ cd ask-alexa-pytkit
+<br>
 $ zip -r ask-lambda.zip *
 </b>
 
 Step 6: Create a Lambda Function
 -----
-- Go to console.aws.amazon.com
+- Go to <b>console.aws.amazon.com</b>
 - Click on Lambda
 - Click on Create Lambda Function
 - Skip the Select Blueprint Section
