@@ -1,4 +1,5 @@
-from lib.dialog_utils import VoiceHandler, ResponseBuilder
+from alexa.ask.utils import VoiceHandler, ResponseBuilder as r
+
 """
 In this file we specify default event handlers which are then populated into the handler map using metaprogramming
 Copyright Anjishnu Kumar 2015
@@ -6,8 +7,6 @@ Copyright Anjishnu Kumar 2015
 Each VoiceHandler function receives a ResponseBuilder object as input and outputs a Response object 
 A response object is defined as the output of ResponseBuilder.create_response()
 """
-
-r = ResponseBuilder
 
 def default_handler(request):
     """ The default handler gets invoked if no handler is set for a request """
@@ -56,4 +55,4 @@ def call_back_intent_handler(request):
     """
     You can insert arbitrary business logic code here
     """
-    return r.create_response(message="Getting Next Recipe ...")
+    return r.create_response(message="Getting Next Recipe ... 123")

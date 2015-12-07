@@ -1,6 +1,11 @@
 #!/usr/bin/python3
 # Generate an intent schema file by asking questions. 
 import json 
+"""
+Usage
+$ python3 generate_intent_schema.py
+"""
+
 
 empty_schema = """{"intents": []}"""
 

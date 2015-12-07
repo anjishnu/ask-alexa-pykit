@@ -5,6 +5,11 @@ import re
 
 DEFAULT_INTENT_SCHEMA_LOCATION = "../config/intent_schema.json"
 
+"""
+Usage - python3 generate_training_data.py
+"""
+
+
 def print_description(intent):
     print ("<> Enter data for <{intent}> OR Press enter with empty string to move onto next intent"
            .format(intent=intent["intent"]))
@@ -16,6 +21,7 @@ def print_description(intent):
         for slot in intent["slots"]:
             print (" - - ", slot["name"], "<TYPE: {}>".format(slot["type"])) 
 
+            
 def validate_input_format(utterance, intent):
     """ TODO add handling for bad input"""
     slots = {slot["name"] for slot in intent["slots"]}
@@ -40,6 +46,7 @@ def validate_input_format(utterance, intent):
                 return False
     return True
 
+
 def lowercase_utterance(utterance):
     split_utt = re.split("({.*})", utterance)
     def lower_case_split(token):
@@ -51,7 +58,6 @@ def lowercase_utterance(utterance):
     return " ".join([lower_case_split(token) for token in split_utt])
     
         
-
 def generate_training_data(intent_schema = DEFAULT_INTENT_SCHEMA_LOCATION):
     with open(intent_schema) as input_file:
         schema = json.load(input_file)
