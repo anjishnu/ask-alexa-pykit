@@ -91,7 +91,10 @@ Step 6: Create a Lambda Function
 
 Step 7: Associate Lambda Function with Alexa Skill
 ------
-Add the ARN code for the Lambda Function you've just created as the Endpoint in the Skill Information tab of your skill's information on https://developer.amazon.com/edw/home.html#/skills/list
+Add the ARN code for the Lambda Function you've just created as the Lambda ARN (Amazon Resource Name) Endpoint in the Skill Information tab of your skill's information on https://developer.amazon.com/edw/home.html#/skills/list
+
+Note an ARN code is at the top of you Lambda page and starts with something like: <b>arn:aws:lambda:us</b>...
+
 
 Contributing
 ---------------
