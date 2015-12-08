@@ -19,7 +19,7 @@ REGISTERED_HANDLERS = initialize_handlers(voice_handlers,
 
 def lambda_handler(request_json, context):
     """
-    This code routes requests to the appropriate handler
+    This code routes requests to the appropriate handler function in voice_handlers.py
     request_json : This is the json received by the alexa skill
     context : event metadata provided by Amazon Web Services Lambda
     """
