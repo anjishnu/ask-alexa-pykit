@@ -22,7 +22,7 @@ slot_type_mappings = {
     4 : ["AMAZON.TIME",
          "Description: " 'converts words that indicate time (four in the morning, two p m) into a time value (16:00).'],
     5 : ["AMAZON.DURATION",
-         "Description: " 'converts words that indicate durations (five minutes) into a numeric duration (5M).']
+         "Description: " 'converts words that indicate durations (five minutes) into a numeric duration (5M).'],
     6 : ["AMAZON.US_CITY",
          "Description: Improves slot performance on all major US cities"]
 }
