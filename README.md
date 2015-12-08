@@ -43,7 +43,6 @@ $ git checkout python_lambda_0.3_release </b>
 Step 2: Create a intent schema for your app 
 ----------
 Skip this if you're trying the included basic example.
-
 <b>
 $ python3 generate_intent_schema.py
 </b>
