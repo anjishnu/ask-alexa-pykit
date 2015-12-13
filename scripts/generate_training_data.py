@@ -76,7 +76,7 @@ def generate_training_data(intent_schema = DEFAULT_INTENT_SCHEMA_LOCATION):
         print_description(intent)
         keep_prompting = True
         while keep_prompting:            
-            utterance = input(str(len(training_data))+". "+intent["intent"]+'\t')
+            utterance = read_in(str(len(training_data))+". "+intent["intent"]+'\t')
             if utterance.strip() == "":
                 keep_prompting = False
             elif utterance.strip() == "<":
