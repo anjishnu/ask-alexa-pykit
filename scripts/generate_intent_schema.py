@@ -1,6 +1,15 @@
 #!/usr/bin/python3
 # Generate an intent schema file by asking questions. 
+from __future__ import print_function
 import json 
+import readline
+
+
+def read_in(**kwargs):
+    try:
+        return raw_input(**kwargs)
+    except NameError:
+        return input(**kwargs)
 """
 Usage
 $ python3 generate_intent_schema.py
@@ -9,7 +18,7 @@ $ python3 generate_intent_schema.py
 
 empty_schema = """{"intents": []}"""
 
-intent_schema_path = "../config/intent_schema.json"
+intent_schema_path = "../alexa/ask/config/intent_schema.json"
 
 slot_type_mappings = {
 
@@ -27,6 +36,7 @@ slot_type_mappings = {
          "Description: Improves slot performance on all major US cities"]
 }
 
+
 def new_intent_schema():
     return append_to_schema(json.loads(empty_schema))
 
@@ -37,7 +47,7 @@ def add_to_existing_schema():
 
 def append_to_schema(current_schema):
     print ("How many intents would you like to add")
-    num = int(input())
+    num = int(read_in())
     for i in range(num):
         current_schema["intents"]+= [add_intent(i)]
     return current_schema
@@ -45,19 +55,19 @@ def append_to_schema(current_schema):
 def add_intent(index = 0):
     intent_json = {}
     print ("Name of intent no. ", index+1)
-    intent_name = input()
+    intent_name = read_in()
     print ("How many slots?")
-    no_slots = int(input())
+    no_slots = int(read_in())
     intent_json = {
         "intent": intent_name,
         "slots": [] 
     }
     for i in range(no_slots):
         print ("Slot name no.", i+1)
-        slot_name = input().strip()
+        slot_name = read_in().strip()
         print ("Slot type? Supported types listed below")
         print (json.dumps(slot_type_mappings, indent=True))
-        slot_type = int(input())
+        slot_type = int(read_in())
         intent_json['slots'].append({'name': slot_name, 
                                       "type": slot_type_mappings[slot_type][0]})
     return intent_json
@@ -68,7 +78,7 @@ if __name__ == "__main__":
     print ("2. Add to current intent schema")
     print ("0. Exit program")
 
-    opt = input()
+    opt = read_in()
 
     if int(opt)==1:
         output = new_intent_schema()
@@ -79,7 +89,7 @@ if __name__ == "__main__":
     print (json.dumps(output, indent=2))
 
     print ("Write to file:", intent_schema_path,"? (y/n)")
-    dec = input().strip().lower()
+    dec = read_in().strip().lower()
     if dec == "y":
         with open(intent_schema_path,'w') as outfile:
             outfile.write(json.dumps(output, indent=4))

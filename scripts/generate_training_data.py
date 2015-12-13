@@ -1,9 +1,17 @@
 #!/usr/bin/python3
 from __future__ import print_function
+import readline
 import json
 import re
 
-DEFAULT_INTENT_SCHEMA_LOCATION = "../config/intent_schema.json"
+DEFAULT_INTENT_SCHEMA_LOCATION = "../alexa/ask/config/intent_schema.json"
+
+def read_in(**kwargs):
+    try:
+        return raw_input(**kwargs)
+    except NameError:
+        return input(**kwargs)
+            
 
 """
 Usage - python3 generate_training_data.py
