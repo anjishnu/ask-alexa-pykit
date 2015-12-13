@@ -3,7 +3,6 @@ import json
 from collections import defaultdict 
 from alexa.ask.utils import Request, initialize_handlers
 import voice_handlers
-from config.config import INTENT_SCHEMA, NON_INTENT_REQUESTS
 
 """
 The REGISTERED_HANDLERS global variable contains a python dict 
@@ -13,9 +12,7 @@ handler = REGISTERED_HANDLERS["IntentRequest"][INTENT_NAME]
 gives you the appropriate handler.
 """    
 
-REGISTERED_HANDLERS = initialize_handlers(voice_handlers,
-                                          INTENT_SCHEMA,
-                                          NON_INTENT_REQUESTS)
+REGISTERED_HANDLERS = initialize_handlers(voice_handlers)
 
 def lambda_handler(request_json, context):
     """
@@ -27,6 +24,4 @@ def lambda_handler(request_json, context):
     voice_handler = REGISTERED_HANDLERS[request.request_type()]
     if request.intent_name() and request.intent_name() in voice_handler:
         voice_handler = voice_handler[request.intent_name()]
-    else:
-        voice_handler = voice_handlers.default_handler
     return voice_handler(request)

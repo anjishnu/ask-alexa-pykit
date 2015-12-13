@@ -3,6 +3,7 @@ from collections import OrderedDict, defaultdict
 import json
 import pkgutil
 import inspect
+from config.config import INTENT_SCHEMA, NON_INTENT_REQUESTS    
 
 
 RAW_RESPONSE = """
@@ -31,18 +32,23 @@ class VoiceHandler(object):
         function.voice_handler = self.kwargs
         return function
 
-    
-def initialize_handlers(voice_handlers, INTENT_SCHEMA, NON_INTENT_REQUESTS):
+
+def initialize_handlers(voice_handlers):
     """
     Automatically populate function handlers from the handlers in the voice_handlers module
     """
+    
     # If no handler is specified, backoff to default handler
+
     init_default_handler = lambda : voice_handlers.default_handler
     all_handlers_map = defaultdict(init_default_handler)
     intent_handlers_map = defaultdict(init_default_handler)    
+
     # Load intent schema to verify that handlers are mapped to valid intents
-    all_intents = {intent["intent"] : { slot["name"] : slot["type"] for slot in intent['slots'] }
+    all_intents = {intent["intent"] : {
+        slot["name"] : slot["type"] for slot in intent['slots'] }
                    for intent in INTENT_SCHEMA['intents'] }    
+
     #Loaded functions in the handlers module
     member_functions = inspect.getmembers(voice_handlers, inspect.isfunction)    
     for (name, function) in member_functions:
@@ -55,6 +61,7 @@ def initialize_handlers(voice_handlers, INTENT_SCHEMA, NON_INTENT_REQUESTS):
                 if function.voice_handler['intent'] in all_intents:
                     # Function is a valid intent voice handler
                     intent_handlers_map[function.voice_handler['intent']] = function                        
+
     all_handlers_map['IntentRequest'] = intent_handlers_map
     return all_handlers_map
 
