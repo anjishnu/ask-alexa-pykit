@@ -7,18 +7,11 @@ import os
 import json
 
 # ---- Helper Functions ----
-def path_relative_to_file(rel_path):
-    dir_name = os.path.dirname(__file__)
-    return os.path.join(dir_name, rel_path)
 
-def load_json_schema(schema_location):
-    with open(schema_location, 'r') as json_file:
-        return json.load(json_file)
-
+path_relative_to_file = lambda rel_path: os.path.join(os.path.dirname(__file__), rel_path)
+load_json_schema = lambda schema_location : json.load(open(schema_location))
+    
 # --- AMAZON related configurations ---
-
-
-ALL_REQUESTS_VALID = True # Declares all incoming requests valid - (switches off oauth validation - useful for debugging)
 
 # The redirect url is used in the account linking process to associate an amazon user account with your OAuth token
 
