@@ -9,3 +9,4 @@ def create_response(*args, **kwargs):
 
 ResponseBuilder = utils.ResponseBuilder
 voice = utils.VoiceHandler()
+Request = utils.Request

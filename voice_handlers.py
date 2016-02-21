@@ -1,4 +1,4 @@
-from alexa.ask import voice, ResponseBuilder as r
+from alexa.ask import voice, Request, ResponseBuilder as r
 
 """
 In this file we specify default event handlers which are then populated into the handler map using metaprogramming
@@ -10,13 +10,16 @@ A response object is defined as the output of ResponseBuilder.create_response()
 
 
 def lambda_function(request_obj, context={}):
-    '''  
+
+    '''      
     This is the main function to enter to enter into this code. 
     If you are hosting this code on AWS Lambda, this should be the entry point. 
     Otherwise your server can hit this code as long as you remember that the
-    input 'request_obj' is JSON request converted into a nested python object.
+    input 'request_obj' is JSON request converted into a nested python object.        
     '''
+
     request = Request(request_obj)
+
     ''' inject user relevant metadata into the request if you want to, here.
     
     e.g. Something like : 
@@ -25,7 +28,7 @@ def lambda_function(request_obj, context={}):
     Then in the handler function you can do something like -
     ... return r.create_response('Hello there {}!'.format(request.meta_data['user_name']))
     '''    
-    voice.route_request(request)
+    return voice.route_request(request)
 
     
 @voice.default_handler()

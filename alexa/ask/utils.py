@@ -31,7 +31,7 @@ class VoiceHandler(object):
     def default_handler(self):
         ''' Decorator to register default handler '''
         def _handler(func):
-            self._handlers[self._default] = func,
+            self._handlers[self._default] = func
             return func        
         return _handler
     
@@ -51,16 +51,16 @@ class VoiceHandler(object):
             
     def route_request(self, request):
         ''' Route the request object to the right handler function '''
-        if not request.intent_name():
-            ''' Not an intent '''
-            if request.request_type() in self._handlers:
-                handler_fn = self._handlers[request.request_type()]
 
-        elif request.intent_name() and (request.intent_name()
-            in self._handlers['IntentRequest']):
-            handler_fn = self._handlers[request.intent_name()]
-        else:
-            handler_fn = self._handlers[self._default]
+        handler_fn = self._handlers[self._default] # Set default handling for noisy requests
+
+        if not request.is_intent() and (request.request_type() in self._handlers):
+            '''  Route request to a non intent handler '''
+            handler_fn = self._handlers[request.request_type()]
+
+        elif request.is_intent() and request.intent_name() in self._handlers['IntentRequest']:
+            ''' Route to right intent handler '''
+            handler_fn = self._handlers['IntentRequest'][request.intent_name()]
 
         return handler_fn(request)
 
@@ -83,6 +83,11 @@ class Request(object):
             return None
         return self.request["request"]["intent"]["name"]
 
+    def is_intent(self):
+        if self.intent_name() == None:
+            return False
+        return True
+    
     def user_id(self):
         return self.request["session"]["user"]["userId"]
 
