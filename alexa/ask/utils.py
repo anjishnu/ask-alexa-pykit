@@ -3,8 +3,6 @@ from collections import OrderedDict, defaultdict
 import json
 import pkgutil
 import inspect
-from config.config import INTENT_SCHEMA, NON_INTENT_REQUESTS    
-
 
 RAW_RESPONSE = """
 {
