@@ -73,7 +73,7 @@ def get_recipe_intent_handler(request):
 
 
 @voice.intent_handler(intent="NextRecipeIntent")
-def call_back_intent_handler(request):
+def next_recipe_intent_handler(request):
     """
     You can insert arbitrary business logic code here
     """

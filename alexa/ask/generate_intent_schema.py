@@ -4,8 +4,10 @@ from __future__ import print_function
 import json 
 import readline
 import os
-from config.config import read_in, DEFAULT_INTENT_SCHEMA_LOCATION as intent_schema_path
+from .config import config
 
+read_in = config.read_in
+intent_schema_path = config.DEFAULT_INTENT_SCHEMA_LOCATION
 
 empty_schema = """{"intents": []}"""
 
@@ -58,11 +60,17 @@ def add_intent(index = 0):
     for i in range(no_slots):
         print ("Slot name no.", i+1)
         slot_name = read_in().strip()
-        print ("Slot type? Supported types listed below")
+        print ("Slot type? Enter a number for AMAZON supported types below, else enter a string for a Custom Slot")
         print (json.dumps(slot_type_mappings, indent=True))
-        slot_type = int(read_in())
+        slot_type_str = read_in()
+        try:
+            # If the slot type is in the pre-filled list
+            slot_type = slot_type_mappings[int(slot_type_str)][0] 
+        except:
+            # If it isn't. 
+            slot_type = slot_type_str
         intent_json['slots'].append({'name': slot_name, 
-                                      "type": slot_type_mappings[slot_type][0]})
+                                      "type": slot_type_str})
     return intent_json
 
 
