@@ -9,8 +9,7 @@ A response object is defined as the output of ResponseBuilder.create_response()
 """
 
 
-def lambda_function(request_obj, context={}):
-
+def lambda_handler(request_obj, context={}):
     '''      
     This is the main function to enter to enter into this code. 
     If you are hosting this code on AWS Lambda, this should be the entry point. 
