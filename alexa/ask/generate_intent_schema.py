@@ -3,22 +3,12 @@
 from __future__ import print_function
 import json 
 import readline
-
-
-def read_in(**kwargs):
-    try:
-        return raw_input(**kwargs)
-    except NameError:
-        return input(**kwargs)
-"""
-Usage
-$ python3 generate_intent_schema.py
-"""
+import os
+from config.config import read_in, DEFAULT_INTENT_SCHEMA_LOCATION as intent_schema_path
 
 
 empty_schema = """{"intents": []}"""
 
-intent_schema_path = "../alexa/ask/config/intent_schema.json"
 
 slot_type_mappings = {
 
@@ -40,10 +30,12 @@ slot_type_mappings = {
 def new_intent_schema():
     return append_to_schema(json.loads(empty_schema))
 
+
 def add_to_existing_schema():
     with open(intent_schema_path, 'r') as infile:
         current_schema = json.load(infile)
     return append_to_schema(current_schema)
+
 
 def append_to_schema(current_schema):
     print ("How many intents would you like to add")
@@ -51,6 +43,7 @@ def append_to_schema(current_schema):
     for i in range(num):
         current_schema["intents"]+= [add_intent(i)]
     return current_schema
+
 
 def add_intent(index = 0):
     intent_json = {}
@@ -71,6 +64,7 @@ def add_intent(index = 0):
         intent_json['slots'].append({'name': slot_name, 
                                       "type": slot_type_mappings[slot_type][0]})
     return intent_json
+
 
 if __name__ == "__main__":
     print ("What would you like to do?")

@@ -1,4 +1,0 @@
-GetRecipeIntent	what is a recipe that uses {salmon|Ingredient}
-GetRecipeIntent	tell me a recipe using {mangoes|Ingredient}
-GetRecipeIntent	what recipe uses {ravioli|Ingredient}
-NextRecipeIntent     what is the next recipe

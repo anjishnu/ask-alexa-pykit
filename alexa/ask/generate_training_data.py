@@ -1,22 +1,12 @@
 #!/usr/bin/python3
+
 from __future__ import print_function
 import readline
 import json
 import re
 
-DEFAULT_INTENT_SCHEMA_LOCATION = "../alexa/ask/config/intent_schema.json"
-
-def read_in(**kwargs):
-    try:
-        return raw_input(**kwargs)
-    except NameError:
-        return input(**kwargs)
+from config.config import DEFAULT_INTENT_SCHEMA_LOCATION, read_in
             
-
-"""
-Usage - python3 generate_training_data.py
-"""
-
 
 def print_description(intent):
     print ("<> Enter data for <{intent}> OR Press enter with empty string to move onto next intent"

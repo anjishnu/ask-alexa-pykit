@@ -1,17 +1,12 @@
 {
     "intents": [
         {
-            "intent": "GetRecipeIntent",
-            "slots": [
-                {
-                    "name": "Ingredient",
-                    "type": "LITERAL"
-                }
-            ]
-        },
+            "slots": [], 
+            "intent": "LoveIntent"
+        }, 
         {
-            "intent": "NextRecipeIntent",
-            "slots": []
+            "slots": [], 
+            "intent": "SexIntent"
         }
     ]
 }

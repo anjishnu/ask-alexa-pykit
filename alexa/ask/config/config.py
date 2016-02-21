@@ -7,8 +7,13 @@ import os
 import json
 
 # ---- Helper Functions ----
+def read_in(*args, **kwargs):
+    try:
+        return raw_input(*args, **kwargs)
+    except NameError:
+        return input(*args, **kwargs)
 
-path_relative_to_file = lambda rel_path: os.path.join(os.path.dirname(__file__), rel_path)
+path_relative_to_file = lambda rel_path: os.path.normpath(os.path.join(os.path.dirname(__file__), rel_path))
 load_json_schema = lambda schema_location : json.load(open(schema_location))
     
 # --- AMAZON related configurations ---
