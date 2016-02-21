@@ -4,8 +4,10 @@ from __future__ import print_function
 import readline
 import json
 import re
+from .config import config
 
-from config.config import DEFAULT_INTENT_SCHEMA_LOCATION, read_in
+read_in = config.read_in
+DEFAULT_INTENT_SCHEMA_LOCATION = config.DEFAULT_INTENT_SCHEMA_LOCATION
             
 
 def print_description(intent):

@@ -3,8 +3,6 @@ from collections import OrderedDict, defaultdict
 import json
 import pkgutil
 import inspect
-from config.config import INTENT_SCHEMA, NON_INTENT_REQUESTS    
-
 
 RAW_RESPONSE = """
 {
@@ -24,47 +22,49 @@ class VoiceHandler(object):
     Decorator to store function metadata
     Functions that are annotated with this label are 
     treated as voice handlers
-    """
-    def __init__(self, **kwargs):
-        self.kwargs = kwargs
+    """    
+    def __init__(self):
+        self._handlers = { "IntentRequest" : {} }
+        self._default = '_default_'
+        
 
-    def __call__(self, function):
-        function.voice_handler = self.kwargs
-        return function
-
-
-def initialize_handlers(voice_handlers):
-    """
-    Automatically populate function handlers from the handlers in the voice_handlers module
-    """
+    def default_handler(self):
+        ''' Decorator to register default handler '''
+        def _handler(func):
+            self._handlers[self._default] = func
+            return func        
+        return _handler
     
-    # If no handler is specified, backoff to default handler
+    def intent_handler(self, intent):
+        ''' Decorator to register intent handler'''
+        def _handler(func):
+            self._handlers['IntentRequest'][intent] = func
+        return _handler
 
-    init_default_handler = lambda : voice_handlers.default_handler
-    all_handlers_map = defaultdict(init_default_handler)
-    intent_handlers_map = defaultdict(init_default_handler)    
+    
+    def request_handler(self, request_type):
+        ''' Decorator to register generic request handler '''
+        def _handler(func):
+            self._handlers[request_type] = func
+        return _handler
+    
+            
+    def route_request(self, request):
+        ''' Route the request object to the right handler function '''
 
-    # Load intent schema to verify that handlers are mapped to valid intents
-    all_intents = {intent["intent"] : {
-        slot["name"] : slot["type"] for slot in intent['slots'] }
-                   for intent in INTENT_SCHEMA['intents'] }    
+        handler_fn = self._handlers[self._default] # Set default handling for noisy requests
 
-    #Loaded functions in the handlers module
-    member_functions = inspect.getmembers(voice_handlers, inspect.isfunction)    
-    for (name, function) in member_functions:
-        if hasattr(function, 'voice_handler'): #Function has been decorated as a voice_handler
-            if 'request_type' in function.voice_handler:
-                if function.voice_handler['request_type'] in NON_INTENT_REQUESTS:
-                    # Function is a valid request voice handler
-                    all_handlers_map[function.voice_handler['request_type']] = function
-            elif 'intent' in function.voice_handler:
-                if function.voice_handler['intent'] in all_intents:
-                    # Function is a valid intent voice handler
-                    intent_handlers_map[function.voice_handler['intent']] = function                        
+        if not request.is_intent() and (request.request_type() in self._handlers):
+            '''  Route request to a non intent handler '''
+            handler_fn = self._handlers[request.request_type()]
 
-    all_handlers_map['IntentRequest'] = intent_handlers_map
-    return all_handlers_map
+        elif request.is_intent() and request.intent_name() in self._handlers['IntentRequest']:
+            ''' Route to right intent handler '''
+            handler_fn = self._handlers['IntentRequest'][request.intent_name()]
 
+        return handler_fn(request)
+
+    
 
 class Request(object):
     """
@@ -73,6 +73,7 @@ class Request(object):
     """    
     def __init__(self, request_dict):
         self.request = request_dict
+        self.meta_data = {}
         
     def request_type(self):
         return self.request["request"]["type"]
@@ -82,6 +83,11 @@ class Request(object):
             return None
         return self.request["request"]["intent"]["name"]
 
+    def is_intent(self):
+        if self.intent_name() == None:
+            return False
+        return True
+    
     def user_id(self):
         return self.request["session"]["user"]["userId"]
 
