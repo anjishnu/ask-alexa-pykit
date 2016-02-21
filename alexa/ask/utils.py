@@ -24,47 +24,49 @@ class VoiceHandler(object):
     Decorator to store function metadata
     Functions that are annotated with this label are 
     treated as voice handlers
-    """
-    def __init__(self, **kwargs):
-        self.kwargs = kwargs
+    """    
+    def __init__(self):
+        self._handlers = { "IntentRequest" : {} }
+        self._default = '_default_'
+        
 
-    def __call__(self, function):
-        function.voice_handler = self.kwargs
-        return function
-
-
-def initialize_handlers(voice_handlers):
-    """
-    Automatically populate function handlers from the handlers in the voice_handlers module
-    """
+    def default_handler(self):
+        ''' Decorator to register default handler '''
+        def _handler(func):
+            self._handlers[self._default] = func,
+            return func        
+        return _handler
     
-    # If no handler is specified, backoff to default handler
+    def intent_handler(self, intent):
+        ''' Decorator to register intent handler'''
+        def _handler(func):
+            self._handlers['IntentRequest'][intent] = func
+        return _handler
 
-    init_default_handler = lambda : voice_handlers.default_handler
-    all_handlers_map = defaultdict(init_default_handler)
-    intent_handlers_map = defaultdict(init_default_handler)    
+    
+    def request_handler(self, request_type):
+        ''' Decorator to register generic request handler '''
+        def _handler(func):
+            self._handlers[request_type] = func
+        return _handler
+    
+            
+    def route_request(self, request):
+        ''' Route the request object to the right handler function '''
+        if not request.intent_name():
+            ''' Not an intent '''
+            if request.request_type() in self._handlers:
+                handler_fn = self._handlers[request.request_type()]
 
-    # Load intent schema to verify that handlers are mapped to valid intents
-    all_intents = {intent["intent"] : {
-        slot["name"] : slot["type"] for slot in intent['slots'] }
-                   for intent in INTENT_SCHEMA['intents'] }    
+        elif request.intent_name() and (request.intent_name()
+            in self._handlers['IntentRequest']):
+            handler_fn = self._handlers[request.intent_name()]
+        else:
+            handler_fn = self._handlers[self._default]
 
-    #Loaded functions in the handlers module
-    member_functions = inspect.getmembers(voice_handlers, inspect.isfunction)    
-    for (name, function) in member_functions:
-        if hasattr(function, 'voice_handler'): #Function has been decorated as a voice_handler
-            if 'request_type' in function.voice_handler:
-                if function.voice_handler['request_type'] in NON_INTENT_REQUESTS:
-                    # Function is a valid request voice handler
-                    all_handlers_map[function.voice_handler['request_type']] = function
-            elif 'intent' in function.voice_handler:
-                if function.voice_handler['intent'] in all_intents:
-                    # Function is a valid intent voice handler
-                    intent_handlers_map[function.voice_handler['intent']] = function                        
+        return handler_fn(request)
 
-    all_handlers_map['IntentRequest'] = intent_handlers_map
-    return all_handlers_map
-
+    
 
 class Request(object):
     """
@@ -73,6 +75,7 @@ class Request(object):
     """    
     def __init__(self, request_dict):
         self.request = request_dict
+        self.meta_data = {}
         
     def request_type(self):
         return self.request["request"]["type"]
