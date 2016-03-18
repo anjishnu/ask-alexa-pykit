@@ -80,7 +80,7 @@ Step 4: Add your business logic
 
 Skip this if you're just trying to run the included basic example.
 
-Go to <b> voice_handlers.py </b> and add handler functions to the code for your specific request or intent.
+Go to <b> lambda_function.py </b> and add handler functions to the code for your specific request or intent.
 This is what a handler function for NextRecipeIntent looks like. Note: a handler function will only be activated when the intent schema in the config/ folder is updated to include the intent it is handling. 
 
     @voice.intent_handler(intent="NextRecipeIntent")
