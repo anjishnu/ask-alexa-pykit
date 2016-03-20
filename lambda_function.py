@@ -1,15 +1,10 @@
-#from alexa.ask import voice, Request, ResponseBuilder as r
-
-from ask import alexa
-
 """
 In this file we specify default event handlers which are then populated into the handler map using metaprogramming
 Copyright Anjishnu Kumar 2015
-
-Each VoiceHandler function receives a Request object as input and outputs a Response object 
-A response object is defined as the output of ResponseBuilder.create_response()
+Happy Hacking! 
 """
 
+from ask import alexa
 
 def lambda_handler(request_obj, context={}):
     '''      
@@ -27,7 +22,7 @@ def lambda_handler(request_obj, context={}):
     ... metadata = {'user_name' : some_database.query_user_name(request.get_user_id())}
     
     Then in the handler function you can do something like -
-    ... return r.create_response('Hello there {}!'.format(request.meta_data['user_name']))
+    ... return alexa.create_response('Hello there {}!'.format(request.metadata['user_name']))
     '''    
     return alexa.route_request(request, metadata)
 
