@@ -155,7 +155,7 @@ class VoiceHandler(ResponseBuilder):
         return _handler
     
             
-    def route_request(self, request_json, metadata):
+    def route_request(self, request_json, metadata={}):
         ''' Route the request object to the right handler function '''
         
         request = Request(request_json)
