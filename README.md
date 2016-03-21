@@ -55,7 +55,7 @@ Step 2: Create a intent schema for your app
 ----------
 Skip this if you're trying the included basic example.
 <b>
-$ python -m alexa.ask.generate_intent_schema
+$ python -m ask.generate_intent_schema
 </b>
 
 This script takes you through the process of generating an intent schema for your app- which defines how Alexa's language understanding system interprets results.
@@ -68,7 +68,7 @@ Skip to 3(b) if simply trying to run example.
 Create a file containing your training examples and upload to Amazon. 
 I've created a script which loads in the intent schema and does some validation and prompting while you type utterances, but I haven't played around with it enough to know if it actually helps.
 
-<b>$ python -m alexa.ask.generate_training_data</b>
+<b>$ python -m ask.generate_training_data</b>
 
 This script prompts you to enter valid training data in the format defined by the ASK (https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/defining-the-voice-interface). You toggle through the different intents by pressing enter with blank input. Play around with it and see if you find it intuitive.
 
@@ -83,12 +83,12 @@ Skip this if you're just trying to run the included basic example.
 Go to <b> lambda_function.py </b> and add handler functions to the code for your specific request or intent.
 This is what a handler function for NextRecipeIntent looks like. Note: a handler function will only be activated when the intent schema in the config/ folder is updated to include the intent it is handling. 
 
-    @voice.intent_handler(intent="NextRecipeIntent")
+    @alexa.intent_handler(intent="NextRecipeIntent")
     def next_recipe_intent_handler(request):
       """
       You can insert arbitrary business logic code here
       """
-      return r.create_response(message="Getting Next Recipe ...")
+      return alexa.create_response(message="Getting Next Recipe ...")
 
 Step 5: Package your code for Lambda
 ----------------
