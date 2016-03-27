@@ -7,6 +7,6 @@ setup(name='ask-alexa-pykit',
       author_email='anjishnu.kr@gmail.com',
       url='https://github.com/anjishnu/ask-alexa-pykit',
       packages=['ask', 'ask.config'], 
-      package_data={'ask.config': ['*']},
+      package_data={'ask.config': ['../data/*']},
       license='MIT',
 )

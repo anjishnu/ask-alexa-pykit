@@ -16,8 +16,7 @@ def lambda_handler(request_obj, context={}):
 
     metadata = {'user_name' : 'SomeRandomDude'} # add your own metadata to the request using key value pairs
     
-    ''' inject user relevant metadata into the request if you want to, here.
-    
+    ''' inject user relevant metadata into the request if you want to, here.    
     e.g. Something like : 
     ... metadata = {'user_name' : some_database.query_user_name(request.get_user_id())}
     
@@ -35,45 +34,38 @@ def default_handler(request):
 
 @alexa.request_handler("LaunchRequest")
 def launch_request_handler(request):
-    """
-    Annoatate functions with @VoiceHandler so that they can be automatically mapped 
-    to request types.
-    Use the 'request_type' field to map them to non-intent requests
-    """
     return alexa.create_response(message="Hello Welcome to My Recipes!")
 
 
-@alexa.request_handler(request_type="SessionEndedRequest")
+@alexa.request_handler("SessionEndedRequest")
 def session_ended_request_handler(request):
     return alexa.create_response(message="Goodbye!")
 
 
-@alexa.intent_handler(intent='GetRecipeIntent')
+@alexa.intent_handler('GetRecipeIntent')
 def get_recipe_intent_handler(request):
     """
-    Use the 'intent' field in the VoiceHandler to map to the respective intent.
     You can insert arbitrary business logic code here    
     """
 
     # Get variables like userId, slots, intent name etc from the 'Request' object
     ingredient = request.slots["Ingredient"] 
+
     if ingredient == None:
         return alexa.create_response("Could not find an ingredient!")
 
-    card = alexa.create_card(title="GetRecipeIntent activated",
-                             subtitle=None,
-                             content="asked alexa to find a recipe using {}"
-                             .format(ingredient))
+    card = alexa.create_card(title="GetRecipeIntent activated", subtitle=None,
+                             content="asked alexa to find a recipe using {}".format(ingredient))
     
     return alexa.create_response("Finding a recipe with the ingredient {}".format(ingredient),
-                             end_session=False,
-                             card_obj=card)
+                                 end_session=False, card_obj=card)
 
 
 
-@alexa.intent_handler(intent="NextRecipeIntent")
+@alexa.intent_handler('NextRecipeIntent')
 def next_recipe_intent_handler(request):
     """
     You can insert arbitrary business logic code here
     """
     return alexa.create_response(message="Getting Next Recipe ... 123")
+

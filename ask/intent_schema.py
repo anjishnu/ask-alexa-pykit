@@ -6,7 +6,7 @@ import json
 from collections import OrderedDict
 from argparse import ArgumentParser
 import os
-from .config.config import read_in, load_builtin_slots
+from .config.config import read_from_user, load_builtin_slots
 
 
 class IntentSchema(object):
@@ -46,12 +46,14 @@ class IntentSchema(object):
     def get_intents(self):
         return self._obj['intents']     
 
+    def get_intent_names(self):
+        return [intent['name'] for intent in self.get_intents()]
     
     @classmethod
     def interactive_build(self, fpath=None):
         intent_schema = IntentSchema.from_filename(fpath)
         print ("How many intents would you like to add")
-        num = read_in(int)
+        num = read_from_user(int)
         for i in range(num):
             intent_schema._add_intent_interactive(intent_num=i+1)
         return intent_schema
@@ -60,20 +62,23 @@ class IntentSchema(object):
         with open(filename, 'w') as fp:
             print(self, file=fp)
             
-    def _add_intent_interactive(self, intent_num):        
+    def _add_intent_interactive(self, intent_num=0):        
+        '''
+        Interactively add a new intent to the intent schema object 
+        '''
         print ("Name of intent number : ", intent_num)
         slot_type_mappings = load_builtin_slots()
-        intent_name = read_in(str)
+        intent_name = read_from_user(str)
         print ("How many slots?")        
-        num_slots = read_in(int)
+        num_slots = read_from_user(int)
         slot_list = []
         for i in range(num_slots):
             print ("Slot name no.", i+1)
-            slot_name = read_in(str).strip()
+            slot_name = read_from_user(str).strip()
             print ("Slot type? Enter a number for AMAZON supported types below,"
                    "else enter a string for a Custom Slot")
             print (json.dumps(slot_type_mappings, indent=True))
-            slot_type_str = read_in(str)
+            slot_type_str = read_from_user(str)
             try: slot_type = slot_type_mappings[int(slot_type_str)]['name'] 
             except: slot_type = slot_type_str
             slot_list += [self.build_slot(slot_name, slot_type)]                    
@@ -82,6 +87,11 @@ class IntentSchema(object):
     
     @classmethod
     def from_filename(self, filename):
+        '''
+        Build an IntentSchema from a file path 
+        creates a new intent schema if the file does not exist, throws an error if the file
+        exists but cannot be loaded as a JSON
+        '''
         if os.path.exists(filename):
             with open(filename) as fp:
                 return IntentSchema(json.load(fp, object_pairs_hook=OrderedDict))
@@ -99,7 +109,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if not args.overwrite:
-        print ('In "Append", mode')
+        print ('In APPEND mode')
         intent_schema = IntentSchema.interactive_build(args.intent_schema)
     else:
         print ('In OVERWRITE mode')

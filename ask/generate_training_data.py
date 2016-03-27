@@ -1,12 +1,11 @@
-#!/usr/bin/python3
-
 from __future__ import print_function
 import readline
 import json
 import re
-from .config.config import read_in
+from .config.config import read_from_user
 from intent_schema import IntentSchema
 from argparse import ArgumentParser
+
 
 def print_description(intent):
     print ("<> Enter data for <{intent}> OR Press enter with empty string to move onto next intent"
@@ -62,7 +61,8 @@ def generate_training_data(schema):
         print_description(intent)
         keep_prompting = True
         while keep_prompting:            
-            utterance = read_in(str, str(len(training_data))+". "+intent["intent"]+'\t')
+            utterance = read_from_user(str,
+                                       str(len(training_data))+". "+intent["intent"]+'\t')
             if utterance.strip() == "":
                 keep_prompting = False
             elif utterance.strip() == "<":
