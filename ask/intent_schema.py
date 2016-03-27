@@ -15,10 +15,17 @@ class IntentSchema(object):
     '''
     def __init__(self, json_obj=None):
         if json_obj:
+            # Use existing intent schema 
             self._obj = json_obj
         else:
+            # Create one from scratch
             self._obj = OrderedDict({ "intents" : [] })
 
+            # These intents are basically always needed
+            # for certification 
+            self.add_intent('AMAZON.HelpIntent')
+            self.add_intent('AMAZON.StopIntent')
+            self.add_intent('AMAZON.CancelIntent')
             
     def add_intent(self,intent_name, slots=None):
         if not slots: slots = []
