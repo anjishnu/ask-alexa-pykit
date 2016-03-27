@@ -1,6 +1,0 @@
-AMAZON.LITERAL	Description: passes the words for the slot value with no conversion
-AMAZON.NUMBER	Description: converts numeric words (five) into digits (such as 5)
-AMAZON.DATE	Description: converts words that indicate dates (today, tomorrow, or july) into a date format (such as 2015-07-00T9)
-AMAZON.TIME	Description: converts words that indicate time (four in the morning, two p m) into a time value (16:00).
-AMAZON.DURATION	Description: converts words that indicate durations (five minutes) into a numeric duration (5M).
-AMAZON.US_CITY	Description: Improves slot performance on all major US cities
