@@ -1,0 +1,6 @@
+AMAZON.LITERAL	Passes the words for the slot value with no conversion, bad accuracy and poor generalization
+AMAZON.NUMBER	Converts numeric words (five) into digits (such as 5) and optimizes Alexa accuracy on the same.
+AMAZON.DATE	Converts words that indicate dates (today, tomorrow, or july) into a date format (such as 2015-07-00T9)
+AMAZON.TIME	Converts words that indicate time (four in the morning, two p m) into a time value (16:00).
+AMAZON.DURATION	Converts words that indicate durations (five minutes) into a numeric duration (5M).
+AMAZON.US_CITY	Improves Alexa's recognition performance on all major US cities

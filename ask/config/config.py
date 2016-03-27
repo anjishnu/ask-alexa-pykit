@@ -7,23 +7,42 @@ import os
 import json
 
 # ---- Helper Functions ----
-def read_in(*args, **kwargs):
-    try:
-        return raw_input(*args, **kwargs)
-    except NameError:
-        return input(*args, **kwargs)
 
+# Get path relative to the current file 
 path_relative_to_file = lambda rel_path: os.path.normpath(os.path.join(os.path.dirname(__file__), rel_path))
+
+# Load a json file as an object
 load_json_schema = lambda schema_location : json.load(open(schema_location))
-    
-# --- AMAZON related configurations ---
 
-# The redirect url is used in the account linking process to associate an amazon user account with your OAuth token
 
-BASE_REDIRECT_URL = "<HARDCODE_IT_HERE>" # Different for each vendor 
+def read_from_user(input_type, *args, **kwargs):
+    '''
+    Helper function to prompt user for input of a specific type 
+    e.g. float, str, int 
+    Designed to work with both python 2 and 3 
+    Yes I know this is ugly.
+    '''
 
-DEFAULT_INTENT_SCHEMA_LOCATION = path_relative_to_file("intent_schema.json")
+    def _read_in(*args, **kwargs):
+        while True:
+            try: tmp =  raw_input(*args, **kwargs)
+            except NameError: tmp =  input(*args, **kwargs)
+            try: return input_type(tmp)
+            except: print ('Expected type', input_type)
 
-NON_INTENT_REQUESTS = ["LaunchRequest", "SessionEndedRequest"]
+    return _read_in(*args, **kwargs)
 
-INTENT_SCHEMA = load_json_schema(DEFAULT_INTENT_SCHEMA_LOCATION)
+# Location of AMAZON.BUILTIN slot types
+BUILTIN_SLOTS_LOCATION = path_relative_to_file(os.path.join('..', 'data', 'amazon_builtin_slots.tsv'))
+
+def load_builtin_slots():
+    '''
+    Helper function to load builtin slots from the data location
+    '''
+    builtin_slots = {}
+    for index, line in enumerate(open(BUILTIN_SLOTS_LOCATION)):
+        o =  line.strip().split('\t')
+        builtin_slots[index] = {'name' : o[0],
+                                'description' : o[1] } 
+    return builtin_slots
+

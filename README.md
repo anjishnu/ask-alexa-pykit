@@ -1,6 +1,8 @@
 # ask-alexa-pykit
 
-AWS Python Lambda Release Version : <b>0.4</b>
+Release Version : <b>0.4 < Master < 0.5 </b> 
+
+The master branch has diverged substantially from the 0.4 release and is looking a lot more like a library. We are getting close to the 0.5 release. We'll probably have need separate tutorials for using this as a library vs a default package to fork off your projects from. 
 
 A minimalist framework for developing apps (skills) for the Amazon Echo's  SDK: The Alexa Skills Kit (<b>ASK</b>).
 
@@ -10,18 +12,24 @@ To use this code for your own skill, simply generate training data, and an inten
 
 # What's new?
 
-ask-alexa-pykit is currently at version <b>0.4</b>
+ask-alexa-pykit is currently at version <b>0.4 < version < 0.5 </b>
   Latest changes:
 
-- Removed a lot of boilerplate and code duplication, which should make life easier for anyone who tries to extend the core library to add functionality.
+- <b> IN BETA: </b> There's a pypi repo now - so you should be able to do `pip install ask-alexa-pykit` the repo contains a dev branch version of project though so it's very much a beta. 0.5 should be the first formal release for pip. 
+
+- Added an actual intent_schema.py module - thin wrapper around the JSON object which allows for easy manipulation, creation and serialization/deserialization.
+
+- This module also doubles as the generate intent schema script now, with hooks to interactively generate the object. 
 
 - The scripts folder is gone now - and the scripts themselves have been moved into the main alexa.ask module, which means that they can stay in sync with the Intent Schema and other config parameters without much fuss.
 
 - The annotation API has changed (become simpler) and the intent map computation and routing now happens under the hood. As of version 0.4 the VoiceHandler object now maintains an internal mapping of handler functions and now takes on the responsibility of handing off incoming requests to the right function end point.
 
-- Now there's only one file that a user has to be aware of. We've fully factored out the alexa specific bits into the alexa library and you don't need to see how the mappings are computed.
+- Now there's only one module that a user has to be aware of. We've fully factored out the alexa specific bits into the <b>ask</b> library and you don't need to see how the mappings are computed.
 
 - The Request class got a minor upgrade - the addition of a 'metadata' field, which allows the developer to easily extend code to inject session, user or device specific metadata (after, for instance, querying a database) into a request object before it gets passed to the annotated handler functions. 
+
+- The interface to the ask library function is now uniformly exposed to developers. A voice handler is now a subclass of a ResponseBuilder so that as a user all your really need to do is `from ask import alexa`
 
 - We're moving towards python 2/3 dual compatibility. I'm not sure if we are there yet (not thoroughly tested) but if you find something that doesn't work in either version of Python. Do let me know.
 
@@ -31,8 +39,8 @@ Basic overview of Classes:
 
 - A VoiceHandler is an object that internally stores a mapping from intents and requests to their corresponding handler functions. These mappings are specified by a simple annotation scheme (see <b>lambda_function.py</b> for an example)
 
-- A VoiceHandler annotated class (specified with an annotation) takes a request as an input, performs some arbitrary logic on top of it, and returns a Response.
-
+- An alexa (VoiceHandler) annotated class (specified with an annotation) takes a request as an input, performs some arbitrary logic on top of it, and returns a Response.
+    
 - The ResponseBuilder is an encapsulated way to construct responses for a VoiceHandler. A Response can be constructed by called ResponseBuilder.create_response.
 
 
@@ -54,8 +62,8 @@ $ git checkout python_lambda_0.4_release </b>
 Step 2: Create a intent schema for your app
 ----------
 Skip this if you're trying the included basic example.
-<b>
-$ python -m ask.generate_intent_schema
+<br><b>
+$ python -m ask.intent_schema -i FILEPATH
 </b>
 
 This script takes you through the process of generating an intent schema for your app- which defines how Alexa's language understanding system interprets results.
@@ -67,9 +75,9 @@ Skip to 3(b) if simply trying to run example.
 3(a):
 Create a file containing your training examples and upload to Amazon.
 I've created a script which loads in the intent schema and does some validation and prompting while you type utterances, but I haven't played around with it enough to know if it actually helps.
-
-<b>$ python -m ask.generate_training_data</b>
-
+<br>
+<b>$ python -m ask.generate_training_data -i INTENT_SCHEMA -o TRAINING_DATA_OUTPUT_LOCATION</b>
+<br>
 This script prompts you to enter valid training data in the format defined by the ASK (https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/defining-the-voice-interface). You toggle through the different intents by pressing enter with blank input. Play around with it and see if you find it intuitive.
 
 3(b):
@@ -81,14 +89,14 @@ Step 4: Add your business logic
 Skip this if you're just trying to run the included basic example.
 
 Go to <b> lambda_function.py </b> and add handler functions to the code for your specific request or intent.
-This is what a handler function for NextRecipeIntent looks like. Note: a handler function will only be activated when the intent schema in the config/ folder is updated to include the intent it is handling.
+This is what a handler function for NextRecipeIntent looks like. 
 
-    @alexa.intent_handler(intent="NextRecipeIntent")
+    @alexa.intent_handler("NextRecipeIntent")
     def next_recipe_intent_handler(request):
       """
       You can insert arbitrary business logic code here
       """
-      return alexa.create_response(message="Getting Next Recipe ...")
+      return alexa.create_response("Getting Next Recipe ...")
 
 Step 5: Package your code for Lambda
 ----------------

@@ -10,7 +10,7 @@ RAW_RESPONSE = """
     "response": {
         "outputSpeech": {
             "type": "PlainText",
-            "text": "Welcome to your recipes. I am ready to serve."
+            "text": "Some default text goes here."
                 },
         "shouldEndSession": False
     }
@@ -96,7 +96,7 @@ class ResponseBuilder(object):
         return response
 
     @classmethod
-    def create_speech(cls, message=None, is_ssml=False):
+    def create_speech(self, message=None, is_ssml=False):
         data = {}
         if is_ssml:
             data['type'] = "SSML"
@@ -157,9 +157,8 @@ class VoiceHandler(ResponseBuilder):
 
     def route_request(self, request_json, metadata=None):
         ''' Route the request object to the right handler function '''
-
-        request = Request(request_json, metadata)
-
+        request = Request(request_json)
+        request.metadata = metadata        
         handler_fn = self._handlers[self._default] # Set default handling for noisy requests
 
         if not request.is_intent() and (request.request_type() in self._handlers):
