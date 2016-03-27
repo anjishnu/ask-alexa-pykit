@@ -10,7 +10,7 @@ RAW_RESPONSE = """
     "response": {
         "outputSpeech": {
             "type": "PlainText",
-            "text": "Welcome to your recipes. I am ready to serve."
+            "text": "Some default text goes here."
                 },
         "shouldEndSession": False
     }
@@ -96,7 +96,7 @@ class ResponseBuilder(object):
         return response
     
     @classmethod
-    def create_speech(cls, message=None, is_ssml=False):
+    def create_speech(self, message=None, is_ssml=False):
         data = {}
         if is_ssml:
             data['type'] = "SSML"

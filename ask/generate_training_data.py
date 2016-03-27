@@ -4,11 +4,9 @@ from __future__ import print_function
 import readline
 import json
 import re
-from .config import config
-
-read_in = config.read_in
-DEFAULT_INTENT_SCHEMA_LOCATION = config.DEFAULT_INTENT_SCHEMA_LOCATION
-            
+from .config.config import read_in
+from intent_schema import IntentSchema
+from argparse import ArgumentParser
 
 def print_description(intent):
     print ("<> Enter data for <{intent}> OR Press enter with empty string to move onto next intent"
@@ -26,7 +24,6 @@ def validate_input_format(utterance, intent):
     """ TODO add handling for bad input"""
     slots = {slot["name"] for slot in intent["slots"]}
     split_utt = re.split("{(.*)}", utterance)
-
     banned = set("-/\\()^%$#@~`-_=+><;:")
     for token in split_utt:
         if (banned & set(token)):
@@ -58,17 +55,14 @@ def lowercase_utterance(utterance):
     return " ".join([lower_case_split(token) for token in split_utt])
     
         
-def generate_training_data(intent_schema = DEFAULT_INTENT_SCHEMA_LOCATION):
-    with open(intent_schema) as input_file:
-        schema = json.load(input_file)
+def generate_training_data(schema):
     print ("Loaded intent schema, populating intents")
     training_data = []
-    for intent in schema["intents"]:
-        utterance = "default"
+    for intent in schema.get_intents():
         print_description(intent)
         keep_prompting = True
         while keep_prompting:            
-            utterance = read_in(str(len(training_data))+". "+intent["intent"]+'\t')
+            utterance = read_in(str, str(len(training_data))+". "+intent["intent"]+'\t')
             if utterance.strip() == "":
                 keep_prompting = False
             elif utterance.strip() == "<":
@@ -80,5 +74,11 @@ def generate_training_data(intent_schema = DEFAULT_INTENT_SCHEMA_LOCATION):
     return training_data                
 
 
-with open("utterances.txt", 'w') as utterance_file:
-    utterance_file.write("\n".join(generate_training_data()))
+if __name__ == '__main__':
+    parser = ArgumentParser()
+    parser.add_argument('--intent_schema', '-i', required=True)
+    parser.add_argument('--output', '-o', default='utterances.txt')
+    args = parser.parse_args()
+    intent_schema = IntentSchema.from_filename(args.intent_schema)    
+    with open(args.output, 'w') as utterance_file:
+        utterance_file.write("\n".join(generate_training_data(intent_schema)))
