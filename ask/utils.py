@@ -159,8 +159,7 @@ class VoiceHandler(ResponseBuilder):
         ''' Route the request object to the right handler function '''
         
         request = Request(request_json)
-        request.meta_data = metadata
-        
+        request.metadata = metadata        
         handler_fn = self._handlers[self._default] # Set default handling for noisy requests
 
         if not request.is_intent() and (request.request_type() in self._handlers):
