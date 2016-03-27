@@ -27,7 +27,7 @@ class IntentSchema(object):
             self.add_intent('AMAZON.StopIntent')
             self.add_intent('AMAZON.CancelIntent')
             
-    def add_intent(self,intent_name, slots=None):
+    def add_intent(self, intent_name, slots=None):
         if not slots: slots = []
         intent = OrderedDict()
         intent ['intent'], intent['slots'] = intent_name, slots        
@@ -47,7 +47,7 @@ class IntentSchema(object):
         return self._obj['intents']     
 
     def get_intent_names(self):
-        return [intent['name'] for intent in self.get_intents()]
+        return [intent['intent'] for intent in self.get_intents()]
     
     @classmethod
     def interactive_build(self, fpath=None):
@@ -98,8 +98,11 @@ class IntentSchema(object):
         else:
             print ('File does not exist')
             return IntentSchema()
-        
 
+def from_filename(fname):
+    return IntentSchema.from_filename(fname)
+
+        
 if __name__ == '__main__':
 
     parser = ArgumentParser()
