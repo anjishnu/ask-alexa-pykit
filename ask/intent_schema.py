@@ -6,22 +6,7 @@ import json
 from collections import OrderedDict
 from argparse import ArgumentParser
 import os
-from .config.config import read_in
-
-slot_type_mappings = {
-    1 : ["AMAZON.LITERAL",
-         "Description: " "passes the words for the slot value with no conversion"],
-    2 : ["AMAZON.NUMBER",
-         "Description: " 'converts numeric words (five) into digits (such as 5)'],
-    3 : ["AMAZON.DATE", "Description: "
-         'converts words that indicate dates (today, tomorrow, or july) into a date format (such as 2015-07-00T9)'],
-    4 : ["AMAZON.TIME",
-         "Description: " 'converts words that indicate time (four in the morning, two p m) into a time value (16:00).'],
-    5 : ["AMAZON.DURATION",
-         "Description: " 'converts words that indicate durations (five minutes) into a numeric duration (5M).'],
-    6 : ["AMAZON.US_CITY",
-         "Description: Improves slot performance on all major US cities"]
-}
+from .config.config import read_in, load_builtin_slots
 
 
 class IntentSchema(object):
@@ -68,10 +53,11 @@ class IntentSchema(object):
         with open(filename, 'w') as fp:
             print(self, file=fp)
             
-    def _add_intent_interactive(self, intent_num):
+    def _add_intent_interactive(self, intent_num):        
         print ("Name of intent number : ", intent_num)
+        slot_type_mappings = load_builtin_slots()
         intent_name = read_in(str)
-        print ("How many slots?")
+        print ("How many slots?")        
         num_slots = read_in(int)
         slot_list = []
         for i in range(num_slots):
@@ -81,7 +67,7 @@ class IntentSchema(object):
                    "else enter a string for a Custom Slot")
             print (json.dumps(slot_type_mappings, indent=True))
             slot_type_str = read_in(str)
-            try: slot_type = slot_type_mappings[int(slot_type_str)][0] 
+            try: slot_type = slot_type_mappings[int(slot_type_str)]['name'] 
             except: slot_type = slot_type_str
             slot_list += [self.build_slot(slot_name, slot_type)]                    
         self.add_intent(intent_name, slot_list)                        

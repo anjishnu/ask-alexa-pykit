@@ -24,4 +24,14 @@ def read_in(input_type, *args, **kwargs):
 
 path_relative_to_file = lambda rel_path: os.path.normpath(os.path.join(os.path.dirname(__file__), rel_path))
 load_json_schema = lambda schema_location : json.load(open(schema_location))
-    
+
+BUILTINS_LOCATION = path_relative_to_file('amazon_builtin_slots.tsv')
+
+def load_builtin_slots():
+    builtin_slots = {}
+    for index, line in enumerate(open(BUILTINS_LOCATION)):
+        o =  line.strip().split('\t')
+        builtin_slots[index] = {'name' : o[0],
+                                'description' : o[1] } 
+    return builtin_slots
+
