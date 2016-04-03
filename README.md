@@ -14,7 +14,7 @@ To use this code for your own skill, simply generate training data, and an inten
 
   Latest changes:
 
-- <b> IN BETA: </b> There's a pypi repo now - so you should be able to do `pip install ask-alexa-pykit` the repo contains a dev branch version of project though so it's very much a beta. 0.5 should be the first formal release for pip. 
+-  There's a <b>pypi repo</b> now https://pypi.python.org/pypi/ask-alexa-pykit/ - so you should be able to do `pip install ask-alexa-pykit` to use 'ask' as a standard python library or `pip install ask-alexa-pykit --target new_skill_folder` to install it into a directory (which will be your AWS Lambda Function directory). 
 
 - Added an actual intent_schema.py module - thin wrapper around the JSON object which allows for easy manipulation, creation and serialization/deserialization. This module also doubles as the generate intent schema script now, with hooks to interactively generate the object. 
 
