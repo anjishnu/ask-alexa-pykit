@@ -26,6 +26,7 @@ class Request(object):
     def __init__(self, request_dict, metadata=None):
         self.request = request_dict
         self.metadata = metadata or {}
+        self.session = self.request.get('session',{}).get('attributes',{})     
         if self.intent_name():
             self.slots = self.get_slot_map()
 
@@ -85,7 +86,7 @@ class ResponseBuilder(object):
         end_session - flag to determine whether this interaction should end the session
         card_obj = JSON card object to substitute the 'card' field in the raw_response
         """
-        response = self.base_response
+        response = dict(self.base_response)
         if message:
             response['response'] = self.create_speech(message, is_ssml)
         response['response']['shouldEndSession'] = end_session
@@ -134,24 +135,31 @@ class VoiceHandler(ResponseBuilder):
         self._handlers = { "IntentRequest" : {} }
         self._default = '_default_'
 
+        
     def default_handler(self):
         ''' Decorator to register default handler '''
+
         def _handler(func):
             self._handlers[self._default] = func
-            return func
+
         return _handler
 
+    
     def intent_handler(self, intent):
         ''' Decorator to register intent handler'''
+
         def _handler(func):
             self._handlers['IntentRequest'][intent] = func
+
         return _handler
 
 
     def request_handler(self, request_type):
         ''' Decorator to register generic request handler '''
+
         def _handler(func):
             self._handlers[request_type] = func
+
         return _handler
 
 
@@ -169,4 +177,6 @@ class VoiceHandler(ResponseBuilder):
             ''' Route to right intent handler '''
             handler_fn = self._handlers['IntentRequest'][request.intent_name()]
 
-        return handler_fn(request)
+        response = handler_fn(request)
+        response['sessionAttributes'] = request.session
+        return response
