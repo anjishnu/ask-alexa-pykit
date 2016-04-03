@@ -23,7 +23,7 @@ def lambda_handler(request_obj, context=None):
     Then in the handler function you can do something like -
     ... return alexa.create_response('Hello there {}!'.format(request.metadata['user_name']))
     '''
-    return alexa.route_request(request, metadata)
+    return alexa.route_request(request_obj, metadata)
 
 
 @alexa.default_handler()

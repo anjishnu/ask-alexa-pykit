@@ -1,6 +1,8 @@
 '''
 This is a helper function to run ask-alexa-pykit locally to debug etc
-It is not intended to be used as a 
+It is not intended to be used as a full production server since it doesn't have the requisite HTTPS 
+security checks implemented.
+
 '''
 
 from flask import Flask, request

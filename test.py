@@ -15,5 +15,6 @@ if __name__ == '__main__':
     print ('Request JSON')
     print (json.dumps(request_obj, indent=2))
     response = lambda_handler(request_obj)
+    print ('Response JSON')
     print (json.dumps(response, indent=2))
     
