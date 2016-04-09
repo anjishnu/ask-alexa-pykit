@@ -119,7 +119,7 @@ if __name__ == '__main__':
         intent_schema = IntentSchema.interactive_build()        
 
     print ("Write to file:", args.intent_schema,"? (y/n)")
-    dec = read_in(str).strip().lower()
+    dec = read_from_user(str).strip().lower()
     if dec == "y":
         intent_schema.save_to_file(args.intent_schema)
     elif dec == "n":
