@@ -1,8 +1,8 @@
 # ask-alexa-pykit
 
-Release Version : <b>0.4 < Master < 0.5 </b> 
+Release Version : <b>0.5.1</b> 
 
-The master branch has diverged substantially from the 0.4 release and is looking a lot more like a library. We are getting close to the 0.5 release. We'll probably have need separate tutorials for using this as a library vs a default package to fork off your projects from. 
+ask-alexa-pykit 0.5 is out!
 
 A minimalist framework for developing apps (skills) for the Amazon Echo's  SDK: The Alexa Skills Kit (<b>ASK</b>).
 
@@ -12,14 +12,11 @@ To use this code for your own skill, simply generate training data, and an inten
 
 # What's new?
 
-ask-alexa-pykit is currently at version <b>0.4 < version < 0.5 </b>
   Latest changes:
 
 - <b> IN BETA: </b> There's a pypi repo now - so you should be able to do `pip install ask-alexa-pykit` the repo contains a dev branch version of project though so it's very much a beta. 0.5 should be the first formal release for pip. 
 
-- Added an actual intent_schema.py module - thin wrapper around the JSON object which allows for easy manipulation, creation and serialization/deserialization.
-
-- This module also doubles as the generate intent schema script now, with hooks to interactively generate the object. 
+- Added an actual intent_schema.py module - thin wrapper around the JSON object which allows for easy manipulation, creation and serialization/deserialization. This module also doubles as the generate intent schema script now, with hooks to interactively generate the object. 
 
 - The scripts folder is gone now - and the scripts themselves have been moved into the main alexa.ask module, which means that they can stay in sync with the Intent Schema and other config parameters without much fuss.
 
@@ -31,7 +28,9 @@ ask-alexa-pykit is currently at version <b>0.4 < version < 0.5 </b>
 
 - The interface to the ask library function is now uniformly exposed to developers. A voice handler is now a subclass of a ResponseBuilder so that as a user all your really need to do is `from ask import alexa`
 
-- We're moving towards python 2/3 dual compatibility. I'm not sure if we are there yet (not thoroughly tested) but if you find something that doesn't work in either version of Python. Do let me know.
+- Improved session handling - no need to pass back the session attributes - just edit them in the dict and they'll automatically get propogated.
+
+- Python 2/3 dual compatibility
 
 Basic overview of Classes:
 
@@ -47,17 +46,29 @@ Basic overview of Classes:
 Step 1: Download Code
 -----------
 
+Method 1:
 
 <b>$ git clone https://github.com/anjishnu/ask-alexa-pykit.git </b>
 
-
-Make sure you're in a python lambda release branch. E.g.
+Make sure you're in a python lambda release branch. E.g
 
 <b>
 $ cd ask-alexa-pykit
 <br>
-$ git checkout python_lambda_0.4_release </b>
+$ git checkout python_lambda_0.5_release </b>
+<br>
+Otherwise your build my be broken since the master branch is not always stable. 
+<br>
+Method 2:
+<br>
+<b>
+$ mkdir my_new_skill
+<br>
+$ pip install ask-alexa-pykit --target my_new_skill 
+<br>
+</b>
 
+ask-alexa-pykit is now installed in your <b>my_new_skill</b> directory. Just import the library and start hacking. 
 
 Step 2: Create a intent schema for your app
 ----------
