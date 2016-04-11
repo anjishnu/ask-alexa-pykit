@@ -126,6 +126,7 @@ Step 6: Create a Lambda Function
 -----
 - Go to <b>console.aws.amazon.com</b>
 - Click on Lambda
+- Select [Virgina] on the top right. (ASK source is only available in Virginia)
 - Click on Create Lambda Function
 - Skip the Select Blueprint Section
 - In the configure step: choose a name e.g. alexa-pykit-demo
