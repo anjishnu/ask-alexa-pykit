@@ -1,6 +1,6 @@
 # ask-alexa-pykit
 
-Release Version : <b>0.5.1</b> 
+Release Version : <b>0.5.2</b> 
 
 ask-alexa-pykit 0.5 is out!
 
