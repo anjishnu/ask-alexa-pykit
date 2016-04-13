@@ -28,12 +28,13 @@ def lambda_handler(request_obj, context=None):
 
 @alexa.default_handler()
 def default_handler(request):
-    """ The default handler gets invoked if no handler is set for a request """
+    """ The default handler gets invoked if no handler is set for a request type """
     return alexa.create_response(message="Just ask")
 
 
 @alexa.request_handler("LaunchRequest")
 def launch_request_handler(request):
+    ''' Handler for LaunchRequest '''
     return alexa.create_response(message="Hello Welcome to My Recipes!")
 
 
@@ -49,20 +50,19 @@ def get_recipe_intent_handler(request):
     """
 
     # Get variables like userId, slots, intent name etc from the 'Request' object
-    ingredient = request.slots["Ingredient"] 
+    ingredient = request.slots["Ingredient"]  # Gets an Ingredient Slot from the Request object.
     
     if ingredient == None:
         return alexa.create_response("Could not find an ingredient!")
-    request.session['last_ingredient'] = ingredient
 
     # All manipulations to the request's session object are automatically reflected in the request returned to Amazon.
     # For e.g. This statement adds a new session attribute (automatically returned with the response) storing the
     # Last seen ingredient value in the 'last_ingredient' key. 
 
-    request.session['last_ingredient'] = ingredient
-
+    request.session['last_ingredient'] = ingredient # Adding a new 
     # Modifying state like this saves us from explicitly having to return Session objects after every response
-    
+
+    # alexa can also build cards which can be sent as part of the response
     card = alexa.create_card(title="GetRecipeIntent activated", subtitle=None,
                              content="asked alexa to find a recipe using {}".format(ingredient))    
 
@@ -77,4 +77,3 @@ def next_recipe_intent_handler(request):
     You can insert arbitrary business logic code here
     """
     return alexa.create_response(message="Getting Next Recipe ... 123")
-
