@@ -1,6 +1,6 @@
 # ask-alexa-pykit
 
-Release Version : <b>0.5.2</b> 
+Release Version : <b>0.5.3</b> 
 
 ask-alexa-pykit 0.5 is out!
 
@@ -72,17 +72,18 @@ ask-alexa-pykit is now installed in your <b>my_new_skill</b> directory. Just imp
 
 Step 2: Create a intent schema for your app
 ----------
-Skip this if you're trying the included basic example.
+Skip this if you're trying the included basic example and use  <b>sample_intent_schema.json</b> as your <b>INTENT_SCHEMA</b>.
+
 <br><b>
 $ python -m ask.intent_schema -i FILEPATH
 </b>
 
 This script takes you through the process of generating an intent schema for your app- which defines how Alexa's language understanding system interprets results.
-After the process is complete, it asks you whether you the intent schema moved to the appropriate location.
+After the process is complete, it asks you whether you the intent schema stored at the appropriate location.
 
 Step 3: Generate training data and upload to Amazon.
 --------------
-Skip to 3(b) if simply trying to run example.
+
 3(a):
 Create a file containing your training examples and upload to Amazon.
 I've created a script which loads in the intent schema and does some validation and prompting while you type utterances, but I haven't played around with it enough to know if it actually helps.
