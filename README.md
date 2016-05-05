@@ -1,6 +1,6 @@
 # ask-alexa-pykit
 
-Release Version : <b>0.5.3</b> 
+Release Version : <b>0.5.4</b> 
 
 ask-alexa-pykit 0.5 is out!
 
@@ -88,7 +88,7 @@ Step 3: Generate training data and upload to Amazon.
 Create a file containing your training examples and upload to Amazon.
 I've created a script which loads in the intent schema and does some validation and prompting while you type utterances, but I haven't played around with it enough to know if it actually helps.
 <br>
-<b>$ python -m ask.generate_training_data -i INTENT_SCHEMA -o TRAINING_DATA_OUTPUT_LOCATION</b>
+<b>$ python -m ask.write_sample -i INTENT_SCHEMA -o TRAINING_DATA_OUTPUT_LOCATION</b>
 <br>
 This script prompts you to enter valid training data in the format defined by the ASK (https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/defining-the-voice-interface). You toggle through the different intents by pressing enter with blank input. Play around with it and see if you find it intuitive.
 
