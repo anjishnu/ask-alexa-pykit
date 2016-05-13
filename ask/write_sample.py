@@ -3,8 +3,11 @@ import readline
 import json
 import re
 from .config.config import read_from_user
-from intent_schema import IntentSchema
 from argparse import ArgumentParser
+try:
+    from intent_schema import IntentSchema
+except:
+    from ask.intent_schema import IntentSchema
 
 
 def print_description(intent):
