@@ -6,6 +6,12 @@ ask-alexa-pykit 0.5 is out!
 
 A minimalist framework for developing apps (skills) for the Amazon Echo's  SDK: The Alexa Skills Kit (<b>ASK</b>).
 
+<b>What does this library do?</b>
+- Remove boiler plate from Alexa Skills Kit Code - maps intents directly to their handler functions.
+- Provide utils to quickly and effectively generate and manipulate sample utterances and the intent schema. 
+- Provides python objects to quickly build alexa responses. 
+- Automatic session management using session variables - your code gets access to a really simple interface for session management, you just add key value pairs to, or delete things from, a python dictionary, and this library along with the ASK platform takes care of the rest. 
+
 To use this code for your own skill, simply generate training data, and an intent schema definition and edit <b>lambda_function.py</b> to add handler functions for the intents and requests that your skill supports - this should be enough to get started.
 
 <b>Note</b>: Unless someone asks me to reconsider - I am now only going to do further releases of this library for AWS Lambda - the core library is concise enough that it can be included into any python server framework with just a few imports. The old releases (for cherrypy) will contain the infuriating request validation parts of the library which can be useful for people who don't want to use the Lambda or LambdaProxy approach to skill development.
