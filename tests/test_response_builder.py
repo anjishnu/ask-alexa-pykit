@@ -63,3 +63,8 @@ class TestResponeHandler(object):
         expected = {'type': 'Something else'}
         output = ask.ResponseBuilder.create_card(card_type='Something else')
         assert_dict_equal(output, expected)
+
+    def test_create_response_defaults(self):
+        output = ask.ResponseBuilder.create_response()
+
+        assert_dict_equal(ask.ResponseBuilder.base_response, output)

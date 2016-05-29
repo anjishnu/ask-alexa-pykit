@@ -3,58 +3,8 @@ from unittest import skip
 from nose.tools import *
 
 from .context import ask
+from .fixtures.requests import TEST_FULL_REQUEST_DICT, TEST_SPARSE_REQUEST_DICT
 
-TEST_FULL_REQUEST_DICT = {
-    "session": {
-        "sessionId": "SessionId.d461672c-2997-4d9d-9a8c-a67834acb9aa",
-        "application": {
-            "applicationId": "amzn1.echo-sdk-ams.app.a306b3a3-3331-43c1-87bd-87d29d16fac8"
-        },
-        "user": {
-            "userId": "amzn1.account.AGBATYSC32Y2QVDQKOWJUUJNEYFA",
-            "accessToken": "fillertoken-fix-later"
-        },
-        "new": True
-    },
-    "request": {
-        "type": "IntentRequest",
-        "requestId": "EdwRequestId.b22db637-b8f9-43c0-ae0c-1a9b35a02610",
-        "timestamp": 1447911387582,
-        "intent": {
-            "name": "YesIntent",
-            "slots": {
-                "example1": {
-                    "value": "value1"
-                },
-                "example2": {
-                    "value": "value2"
-                }
-            }
-        }
-    }
-}
-
-TEST_SPARSE_REQUEST_DICT = {
-    "session": {
-        "sessionId": "SessionId.d461672c-2997-4d9d-9a8c-a67834acb9aa",
-        "application": {
-            "applicationId": "amzn1.echo-sdk-ams.app.a306b3a3-3331-43c1-87bd-87d29d16fac8"
-        },
-        "user": {
-            "userId": "amzn1.account.AGBATYSC32Y2QVDQKOWJUUJNEYFA",
-        #"intent": {
-        #    "name": "YesIntent",
-        #    "slots": {}
-        #}
-        },
-        "new": True
-    },
-    "request": {
-        "type": "IntentRequest",
-        "requestId": "EdwRequestId.b22db637-b8f9-43c0-ae0c-1a9b35a02610",
-        "timestamp": 1447911387582,
-    }
-}
 
 
 class TestStandardRequest(object):
@@ -131,6 +81,7 @@ class TestStandardRequest(object):
 
         assert_equal(slots, slot_map)
         assert_is_not_none(slots)
+
 
 class TestSparseRequest(object):
     def setUp(self):
