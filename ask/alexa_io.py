@@ -71,6 +71,30 @@ class Request(object):
     def get_slot_map(self):
         return {slot_name : self.get_slot_value(slot_name) for slot_name in self.get_slot_names()}
 
+class Response(object):
+    def __init__(self, json_obj):
+        self.json_obj = json_obj
+
+    def __repr__(self):
+        return json.dumps(self.json_obj, indent=4)
+
+    def with_card(self, title, content, subtitle, card_type='Simple'):
+        new_obj = dict(self.json_obj)
+        new_obj['response']['card'] = ResponseBuilder.create_card(title, content, 
+                                                                        subtitle, card_type)
+        return Response(new_obj)
+
+    def with_reprompt(self, message, is_ssml):
+        new_obj = dict(self.json_obj)
+        new_obj['response']['reprompt'] = ResponseBuilder.create_speech(message, is_ssml)
+        return Response(new_obj)
+    
+    def set_session(self, session_attr):
+        self.json_obj['sessionAttributes'] = session_attr
+        
+    def to_json(self):
+        return dict(self.json_obj)
+
 
 class ResponseBuilder(object):
     """
@@ -94,17 +118,19 @@ class ResponseBuilder(object):
             response['response']['card'] = card_obj
         if reprompt_message:
             response['response']['reprompt'] = self.create_speech(reprompt_message, is_ssml)
-        return response
+        return Response(response)
+
+    @classmethod
+    def respond(self, *args, **kwargs):        
+        return self.create_response(*args, **kwargs)
 
     @classmethod
     def create_speech(self, message=None, is_ssml=False):
         data = {}
         if is_ssml:
-            data['type'] = "SSML"
-            data['ssml'] = message
+            data['type'], data['ssml'] = "SSML", message
         else:
-            data['type'] = "PlainText"
-            data['text'] = message
+            data['type'], data['text'] = "PlainText", message
         return {"outputSpeech" : data }
 
     @classmethod
@@ -132,11 +158,19 @@ class VoiceHandler(ResponseBuilder):
     treated as voice handlers """
 
     def __init__(self):
+        """
+        >>> alexa = VoiceHandler()
+        >>> request =  
+        >>> @alexa.intent('HelloWorldIntent')
+        ... def hello_world(request):
+        ...   return alexa.create_response('hello world')
+        >>> alexa.route_request(request)
+        """
         self._handlers = { "IntentRequest" : {} }
         self._default = '_default_'
 
         
-    def default_handler(self):
+    def default(self):
         ''' Decorator to register default handler '''
 
         def _handler(func):
@@ -145,7 +179,7 @@ class VoiceHandler(ResponseBuilder):
         return _handler
 
     
-    def intent_handler(self, intent):
+    def intent(self, intent):
         ''' Decorator to register intent handler'''
 
         def _handler(func):
@@ -154,7 +188,7 @@ class VoiceHandler(ResponseBuilder):
         return _handler
 
 
-    def request_handler(self, request_type):
+    def request(self, request_type):
         ''' Decorator to register generic request handler '''
 
         def _handler(func):
@@ -164,6 +198,7 @@ class VoiceHandler(ResponseBuilder):
 
 
     def route_request(self, request_json, metadata=None):
+
         ''' Route the request object to the right handler function '''
         request = Request(request_json)
         request.metadata = metadata        
@@ -178,5 +213,5 @@ class VoiceHandler(ResponseBuilder):
             handler_fn = self._handlers['IntentRequest'][request.intent_name()]
 
         response = handler_fn(request)
-        response['sessionAttributes'] = request.session
-        return response
+        response.set_session(request.session)
+        return response.to_json()

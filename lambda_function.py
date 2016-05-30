@@ -26,24 +26,24 @@ def lambda_handler(request_obj, context=None):
     return alexa.route_request(request_obj, metadata)
 
 
-@alexa.default_handler()
+@alexa.default()
 def default_handler(request):
     """ The default handler gets invoked if no handler is set for a request type """
-    return alexa.create_response(message="Just ask")
+    return alexa.respond('Just ask').with_card('Hello World')
 
 
-@alexa.request_handler("LaunchRequest")
+@alexa.request("LaunchRequest")
 def launch_request_handler(request):
     ''' Handler for LaunchRequest '''
     return alexa.create_response(message="Hello Welcome to My Recipes!")
 
 
-@alexa.request_handler("SessionEndedRequest")
+@alexa.request("SessionEndedRequest")
 def session_ended_request_handler(request):
     return alexa.create_response(message="Goodbye!")
 
 
-@alexa.intent_handler('GetRecipeIntent')
+@alexa.intent('GetRecipeIntent')
 def get_recipe_intent_handler(request):
     """
     You can insert arbitrary business logic code here    
@@ -72,7 +72,7 @@ def get_recipe_intent_handler(request):
 
 
 
-@alexa.intent_handler('NextRecipeIntent')
+@alexa.intent('NextRecipeIntent')
 def next_recipe_intent_handler(request):
     """
     You can insert arbitrary business logic code here
