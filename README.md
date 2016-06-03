@@ -109,7 +109,7 @@ Skip this if you're just trying to run the included basic example.
 Go to <b> lambda_function.py </b> and add handler functions to the code for your specific request or intent.
 This is what a handler function for NextRecipeIntent looks like. 
 
-    @alexa.intent_handler("NextRecipeIntent")
+    @alexa.intent("NextRecipeIntent")
     def next_recipe_intent_handler(request):
       """
       You can insert arbitrary business logic code here
