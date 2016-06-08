@@ -7,9 +7,6 @@ from .fixtures.requests import (TEST_SESSION_ENDED_REQUEST, TEST_LAUNCH_REQUEST,
 
 class TestVoiceHandler(object):
 
-#    def setup(self):
-#        reload(ask)
-
     def teardown(self):
         reload(ask)
 
@@ -19,7 +16,7 @@ class TestVoiceHandler(object):
 
     def test_default_handler_decorator(self):
 
-        @ask.alexa.default_handler
+        @ask.alexa.default
         def some_logic():
             pass
 
@@ -29,7 +26,7 @@ class TestVoiceHandler(object):
     def test_request_handler_decorator(self):
         request_type = "bar"
 
-        @ask.alexa.request_handler(request_type)
+        @ask.alexa.request(request_type)
         def request_logic():
             pass
 
@@ -39,7 +36,7 @@ class TestVoiceHandler(object):
     def test_intent_handler_decorator(self):
         intent_type = "baz"
 
-        @ask.alexa.intent_handler(intent_type)
+        @ask.alexa.intent(intent_type)
         def intent_logic():
             pass
 
@@ -52,24 +49,24 @@ class TestVoiceHandlerRouteRequest(object):
     @classmethod
     def setUpClass(cls):
 
-        @ask.alexa.intent_handler('GetZodiacHoroscopeIntent')
+        @ask.alexa.intent('GetZodiacHoroscopeIntent')
         def intent_logic(request):
-            return {'intent_handler_called': True}
+            return ask.Response({'intent_handler_called': True})
 
-        @ask.alexa.default_handler
+        @ask.alexa.default
         def default_logic(request):
-            return {'default_handler_called': True}
+            return ask.Response({'default_handler_called': True})
 
-        @ask.alexa.request_handler('SessionEndedRequest')
+        @ask.alexa.request('SessionEndedRequest')
         def request_logic(request):
-            return {'request_handler_called': True}
+            return ask.Response({'request_handler_called': True})
 
 
     @classmethod
     def tearDownClass(cls):
         reload(ask)  # in case these tests get run before TestVoiceHandler
 
-    def test_routes_to_default_handlre(self):
+    def test_routes_to_default_handler(self):
         req_json = UNRECOGNIZED_INTENT_REQUEST
 
         response = ask.alexa.route_request(req_json)

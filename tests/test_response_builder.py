@@ -1,3 +1,5 @@
+from unittest import skip
+
 from nose.tools import assert_equal, assert_dict_equal
 
 from .context import ask
@@ -64,6 +66,7 @@ class TestResponeHandler(object):
         output = ask.ResponseBuilder.create_card(card_type='Something else')
         assert_dict_equal(output, expected)
 
+    @skip('Until it actually tests something useful')
     def test_create_response_defaults(self):
         output = ask.ResponseBuilder.create_response()
 

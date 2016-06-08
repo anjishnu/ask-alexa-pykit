@@ -1,3 +1,5 @@
+import json
+
 RAW_RESPONSE = """
 {
     "version": "1.0",
@@ -64,6 +66,7 @@ class Request(object):
     def get_slot_map(self):
         return {slot_name: self.get_slot_value(slot_name)
                 for slot_name in self.get_slot_names()}
+
 
 class Response(object):
     def __init__(self, json_obj):
@@ -164,14 +167,12 @@ class VoiceHandler(ResponseBuilder):
         self._handlers = { "IntentRequest" : {} }
         self._default = '_default_'
 
-
     def default(self, func):
         ''' Decorator to register default handler '''
 
         self._handlers[self._default] = func
 
         return func
-
 
     def intent(self, intent):
         ''' Decorator to register intent handler'''
@@ -181,7 +182,6 @@ class VoiceHandler(ResponseBuilder):
             return func
 
         return _handler
-
 
     def request(self, request_type):
         ''' Decorator to register generic request handler '''
