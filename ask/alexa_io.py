@@ -1,8 +1,4 @@
-import os
-from collections import OrderedDict, defaultdict
 import json
-import pkgutil
-import inspect
 
 RAW_RESPONSE = """
 {
@@ -17,7 +13,6 @@ RAW_RESPONSE = """
 }"""
 
 
-
 class Request(object):
     """
     Simple wrapper around the JSON request
@@ -26,7 +21,7 @@ class Request(object):
     def __init__(self, request_dict, metadata=None):
         self.request = request_dict
         self.metadata = metadata or {}
-        self.session = self.request.get('session',{}).get('attributes',{})     
+        self.session = self.request.get('session', {}).get('attributes', {})
         if self.intent_name():
             self.slots = self.get_slot_map()
 
@@ -34,12 +29,12 @@ class Request(object):
         return self.request["request"]["type"]
 
     def intent_name(self):
-        if not "intent" in self.request["request"]:
+        if "intent" not in self.request["request"]:
             return None
         return self.request["request"]["intent"]["name"]
 
     def is_intent(self):
-        if self.intent_name() == None:
+        if self.intent_name() is None:
             return False
         return True
 
@@ -50,7 +45,7 @@ class Request(object):
         try:
             return self.request['session']['user']['accessToken']
         except:
-             return None
+            return None
 
     def session_id(self):
         return self.request["session"]["sessionId"]
@@ -69,7 +64,9 @@ class Request(object):
             return []
 
     def get_slot_map(self):
-        return {slot_name : self.get_slot_value(slot_name) for slot_name in self.get_slot_names()}
+        return {slot_name: self.get_slot_value(slot_name)
+                for slot_name in self.get_slot_names()}
+
 
 class Response(object):
     def __init__(self, json_obj):
@@ -80,7 +77,7 @@ class Response(object):
 
     def with_card(self, title, content, subtitle, card_type='Simple'):
         new_obj = dict(self.json_obj)
-        new_obj['response']['card'] = ResponseBuilder.create_card(title, content, 
+        new_obj['response']['card'] = ResponseBuilder.create_card(title, content,
                                                                         subtitle, card_type)
         return Response(new_obj)
 
@@ -88,10 +85,10 @@ class Response(object):
         new_obj = dict(self.json_obj)
         new_obj['response']['reprompt'] = ResponseBuilder.create_speech(message, is_ssml)
         return Response(new_obj)
-    
+
     def set_session(self, session_attr):
         self.json_obj['sessionAttributes'] = session_attr
-        
+
     def to_json(self):
         return dict(self.json_obj)
 
@@ -121,7 +118,7 @@ class ResponseBuilder(object):
         return Response(response)
 
     @classmethod
-    def respond(self, *args, **kwargs):        
+    def respond(self, *args, **kwargs):
         return self.create_response(*args, **kwargs)
 
     @classmethod
@@ -130,8 +127,9 @@ class ResponseBuilder(object):
         if is_ssml:
             data['type'], data['ssml'] = "SSML", message
         else:
-            data['type'], data['text'] = "PlainText", message
-        return {"outputSpeech" : data }
+            data['type'] = "PlainText"
+            data['text'] = message
+        return {"outputSpeech": data}
 
     @classmethod
     def create_card(self, title=None, subtitle=None, content=None, card_type="Simple"):
@@ -160,7 +158,7 @@ class VoiceHandler(ResponseBuilder):
     def __init__(self):
         """
         >>> alexa = VoiceHandler()
-        >>> request =  
+        >>> request =
         >>> @alexa.intent('HelloWorldIntent')
         ... def hello_world(request):
         ...   return alexa.create_response('hello world')
@@ -169,39 +167,37 @@ class VoiceHandler(ResponseBuilder):
         self._handlers = { "IntentRequest" : {} }
         self._default = '_default_'
 
-        
-    def default(self):
+    def default(self, func):
         ''' Decorator to register default handler '''
 
-        def _handler(func):
-            self._handlers[self._default] = func
+        self._handlers[self._default] = func
 
-        return _handler
+        return func
 
-    
     def intent(self, intent):
         ''' Decorator to register intent handler'''
 
         def _handler(func):
             self._handlers['IntentRequest'][intent] = func
+            return func
 
         return _handler
-
 
     def request(self, request_type):
         ''' Decorator to register generic request handler '''
 
         def _handler(func):
             self._handlers[request_type] = func
+            return func
 
         return _handler
-
 
     def route_request(self, request_json, metadata=None):
 
         ''' Route the request object to the right handler function '''
         request = Request(request_json)
-        request.metadata = metadata        
+        request.metadata = metadata
+        # add reprompt handler or some such for default?
         handler_fn = self._handlers[self._default] # Set default handling for noisy requests
 
         if not request.is_intent() and (request.request_type() in self._handlers):
