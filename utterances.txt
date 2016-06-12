@@ -1,8 +1,0 @@
-GetRecipeIntent	tell me the recipe for  {fish|ingredient} 
-GetRecipeIntent	what is the recipe for  {meat|ingredient} 
-GetRecipeIntent	what can i make with some  {tea|ingredient} 
-NextRecipeIntent	tell me the next recipe please
-NextRecipeIntent	next recipe 
-NextRecipeIntent	next
-NextRecipeIntent	no not that something else
-NextRecipeIntent	next please
