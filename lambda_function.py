@@ -26,7 +26,7 @@ def lambda_handler(request_obj, context=None):
     return alexa.route_request(request_obj, metadata)
 
 
-@alexa.default()
+@alexa.default
 def default_handler(request):
     """ The default handler gets invoked if no handler is set for a request type """
     return alexa.respond('Just ask').with_card('Hello World')
@@ -78,3 +78,21 @@ def next_recipe_intent_handler(request):
     You can insert arbitrary business logic code here
     """
     return alexa.create_response(message="Getting Next Recipe ... 123")
+
+
+if __name__ == "__main__":    
+
+    import flask, argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--serve','-s', action='store_true', default=False)
+    args = parser.parse_args()
+    
+    if args.serve:
+        print('Serving ASK functionality locally.')
+        server = flask.Flask(__name__)
+        @server.route('/')
+        def alexa_skills_kit_requests():
+            request_obj = flask.request.get_json()
+            return lambda_handler(request_obj)
+        server.run()
+    
