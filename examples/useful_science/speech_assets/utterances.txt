@@ -1,0 +1,13 @@
+GetPosts	tell me the something
+GetPosts	tell me something new
+GetPosts	tell me about {Category}
+GetPosts	what is new in {Category}
+GetPosts	something about {Category}
+GetPosts	{Category} fact
+GetPosts	something useful
+GetPosts	get me a {Category} fact
+GetPosts	{Category} information
+GetPosts	{Category} info
+GetPosts	tell me the something interesting
+AMAZON.HelpIntent    what are the categories
+AMAZON.HelpIntent    what can I ask about

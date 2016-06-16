@@ -1,0 +1,21 @@
+{
+    "intents": [
+        {
+            "slots": [
+                {
+                    "type": "Categories",
+                    "name": "Category"
+                }
+            ],
+            "intent": "GetPosts"
+        },
+        {
+            "slots": [],
+            "intent": "AMAZON.HelpIntent"
+        },
+        {
+            "slots": [],
+            "intent": "AMAZON.StopIntent"
+        }
+    ]
+}
