@@ -81,14 +81,18 @@ def next_recipe_intent_handler(request):
 
 
 if __name__ == "__main__":    
-
-    import flask, argparse
+    
+    import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--serve','-s', action='store_true', default=False)
     args = parser.parse_args()
     
-    if args.serve:
+    if args.serve:        
+        ###
+        # This will only be run if you try to run the server in local mode 
+        ##
         print('Serving ASK functionality locally.')
+        import flask
         server = flask.Flask(__name__)
         @server.route('/')
         def alexa_skills_kit_requests():
