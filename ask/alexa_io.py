@@ -1,4 +1,5 @@
 import json
+from ask.dialog import Dialog
 
 RAW_RESPONSE = """
 {
@@ -71,9 +72,13 @@ class Request(object):
 class Response(object):
     def __init__(self, json_obj):
         self.json_obj = json_obj
+        self.session = self.json_obj['sessionAttributes'] if 'sessionAttributes' in self.json_obj else {}
 
     def __repr__(self):
         return json.dumps(self.json_obj, indent=4)
+
+    def get_text(self):
+        return self.json_obj['response']['outputSpeech']['text']
 
     def with_card(self, title, content, subtitle, card_type='Simple'):
         new_obj = dict(self.json_obj)
@@ -82,11 +87,21 @@ class Response(object):
         return Response(new_obj)
 
     def with_reprompt(self, message, is_ssml):
+        ''' Add a reprompt to a resposne ''' 
         new_obj = dict(self.json_obj)
         new_obj['response']['reprompt'] = ResponseBuilder.create_speech(message, is_ssml)
         return Response(new_obj)
 
+    def expect(self, expected_intents, on_unexpected_label):
+        ''' Expect certain intents from a user in response to a dialog '''
+        new_obj = dict(self.json_obj)
+        dialog_state = Dialog(expected_intents, on_unexpected_label)
+        new_response = Response(new_obj)
+        new_response.session.update(dialog_state)
+        return new_response
+
     def set_session(self, session_attr):
+        ''' Overwrite session variables '''
         self.json_obj['sessionAttributes'] = session_attr
 
     def to_json(self):
@@ -164,21 +179,30 @@ class VoiceHandler(ResponseBuilder):
         ...   return alexa.create_response('hello world')
         >>> alexa.route_request(request)
         """
-        self._handlers = { "IntentRequest" : {} }
+        self._handlers = { 
+            "IntentRequest" : {},
+            'DialogState' : {} 
+        }
         self._default = '_default_'
 
     def default(self, func):
         ''' Decorator to register default handler '''
-
         self._handlers[self._default] = func
-
-        return func
+        return func            
 
     def intent(self, intent):
         ''' Decorator to register intent handler'''
 
         def _handler(func):
             self._handlers['IntentRequest'][intent] = func
+            return func
+
+        return _handler
+
+    def on_dialog(self, dialog_state):
+        
+        def _handler(func):
+            self._handlers['DialogState'][dialog_state] = func
             return func
 
         return _handler
@@ -192,22 +216,38 @@ class VoiceHandler(ResponseBuilder):
 
         return _handler
 
+
     def route_request(self, request_json, metadata=None):
 
         ''' Route the request object to the right handler function '''
         request = Request(request_json)
         request.metadata = metadata
         # add reprompt handler or some such for default?
+
+
+
+
         handler_fn = self._handlers[self._default] # Set default handling for noisy requests
 
         if not request.is_intent() and (request.request_type() in self._handlers):
-            '''  Route request to a non intent handler '''
+            '''  Route request to a non intent handler '''            
             handler_fn = self._handlers[request.request_type()]
 
         elif request.is_intent() and request.intent_name() in self._handlers['IntentRequest']:
             ''' Route to right intent handler '''
+
             handler_fn = self._handlers['IntentRequest'][request.intent_name()]
 
+            ################################
+            ## Lightweight dialog management 
+            ###############
+
+            dialog_state = Dialog.from_session(request.session)            
+            if dialog_state.expected_intents and request.intent_name() not in dialog_state.expected_intents:
+                if dialog_state.error_label:
+                    handler_fn = self._handlers['DialogState'][dialog_state.error_label]
+                
         response = handler_fn(request)
+        request.session.update(response.session)
         response.set_session(request.session)
         return response.to_json()

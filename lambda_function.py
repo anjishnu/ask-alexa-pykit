@@ -25,6 +25,9 @@ def lambda_handler(request_obj, context=None):
     '''
     return alexa.route_request(request_obj, metadata)
 
+@alexa.on_dialog('ErrorMessage')
+def dialog_handler(request):    
+    return alexa.respond("Sorry, I didn't quite understand what you were trying to do")
 
 @alexa.default
 def default_handler(request):
@@ -34,12 +37,12 @@ def default_handler(request):
 
 @alexa.request("LaunchRequest")
 def launch_request_handler(request):
-    ''' Handler for LaunchRequest '''
+    ''' Handler for LaunchRequest '''    
     return alexa.create_response(message="Hello Welcome to My Recipes!")
 
 
 @alexa.request("SessionEndedRequest")
-def session_ended_request_handler(request):
+def session_ended_request_handler():
     return alexa.create_response(message="Goodbye!")
 
 
@@ -48,7 +51,6 @@ def get_recipe_intent_handler(request):
     """
     You can insert arbitrary business logic code here    
     """
-
     # Get variables like userId, slots, intent name etc from the 'Request' object
     ingredient = request.slots["Ingredient"]  # Gets an Ingredient Slot from the Request object.
     
@@ -73,25 +75,25 @@ def get_recipe_intent_handler(request):
 
 
 @alexa.intent('NextRecipeIntent')
-def next_recipe_intent_handler(request):
+def next_recipe_intent_handler():
     """
     You can insert arbitrary business logic code here
     """
     return alexa.create_response(message="Getting Next Recipe ... 123")
 
 
-if __name__ == "__main__":    
-    
+if __name__ == "__main__":        
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--serve','-s', action='store_true', default=False)
+    parser.add_argument('--serve','-s', action='store_true', default=False,
+                        help='serve locally on flask')
     args = parser.parse_args()
     
     if args.serve:        
         ###
         # This will only be run if you try to run the server in local mode 
         ##
-        print('Serving ASK functionality locally.')
+        print('Start serving ASK functionality locally.')
         import flask
         server = flask.Flask(__name__)
         @server.route('/')

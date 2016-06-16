@@ -10,10 +10,6 @@ class TestVoiceHandler(object):
     def teardown(self):
         reload(ask)
 
-    def test_defaults_on_init(self):
-        assert_equal(ask.alexa._default, '_default_')
-        assert_dict_equal(ask.alexa._handlers, {"IntentRequest": {}})
-
     def test_default_handler_decorator(self):
 
         @ask.alexa.default
@@ -51,15 +47,15 @@ class TestVoiceHandlerRouteRequest(object):
 
         @ask.alexa.intent('GetZodiacHoroscopeIntent')
         def intent_logic(request):
-            return ask.Response({'intent_handler_called': True})
+            return ask.alexa.respond('intent_handler_called')
 
         @ask.alexa.default
         def default_logic(request):
-            return ask.Response({'default_handler_called': True})
+            return ask.alexa.respond('default_handler_called')
 
         @ask.alexa.request('SessionEndedRequest')
         def request_logic(request):
-            return ask.Response({'request_handler_called': True})
+            return ask.alexa.respond('request_handler_called')
 
 
     @classmethod
@@ -68,18 +64,17 @@ class TestVoiceHandlerRouteRequest(object):
 
     def test_routes_to_default_handler(self):
         req_json = UNRECOGNIZED_INTENT_REQUEST
-
-        response = ask.alexa.route_request(req_json)
-        assert_true(response['default_handler_called'])
+        response = ask.Response(ask.alexa.route_request(req_json))
+        assert_equal(response.get_text(), 'default_handler_called')
 
     def test_routes_to_intent_handler(self):
         req_json = TEST_INTENT_REQUEST
-
-        response = ask.alexa.route_request(req_json)
-        assert_true(response['intent_handler_called'])
+        print (req_json)
+        response = ask.Response(ask.alexa.route_request(req_json))
+        print (ask.alexa._handlers)
+        assert_equal(response.get_text(), 'intent_handler_called')
 
     def test_routes_to_request_handler(self):
         req_json = TEST_SESSION_ENDED_REQUEST
-
-        response = ask.alexa.route_request(req_json)
-        assert_true(response['request_handler_called'])
+        response = ask.Response(ask.alexa.route_request(req_json))
+        assert_equal(response.get_text(), 'request_handler_called')
