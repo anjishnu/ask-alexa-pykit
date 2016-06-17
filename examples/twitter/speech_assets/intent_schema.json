@@ -1,0 +1,118 @@
+{
+    "intents": [
+        {
+            "intent": "PostTweet",
+            "slots": [
+                {
+                    "name": "Tweet",
+                    "type": "TWITTER_MESSAGE"
+                }
+            ]
+        },
+        {
+            "intent": "NextIntent",
+            "slots": []
+        },
+        {
+            "intent": "ListHomeTweets",
+            "slots": []
+        },
+        {
+            "intent": "FindLatestMentions",
+            "slots": []
+        },
+        {
+            "intent": "FindFavouriteTweets",
+            "slots": []
+        },
+        {
+            "intent": "RetweetsOfMe",
+            "slots": []
+        },
+        {
+            "intent": "SearchTweets",
+            "slots": [
+                {
+                    "name": "Topic",
+                    "type": "LITERAL"
+                }
+            ]
+        },
+        {
+            "intent": "AMAZON.StopIntent",
+            "slots": []
+        },
+        {
+            "intent": "UserTweets",
+            "slots": []
+        },
+        {
+            "intent": "AMAZON.HelpIntent",
+            "slots": []
+        },
+        {
+            "intent": "AMAZON.CancelIntent",
+            "slots": []
+        },
+        {
+            "intent": "YesIntent",
+            "slots": []
+        },
+        {
+            "intent": "SearchTrends",
+            "slots": [
+                {
+                    "name": "Location",
+                    "type": "AMAZON.US_CITY"
+                }
+            ]
+        },
+        {
+            "intent": "MoreInfo",
+            "slots": [
+                {
+                    "name": "Index",
+                    "type": "AMAZON.NUMBER"
+                },
+                {
+                    "name": "Ordinal",
+                    "type": "ORDINAL"
+                }
+            ]
+        },
+        {
+            "intent": "ReplyIntent",
+            "slots": [
+                {
+                    "name": "Index",
+                    "type": "AMAZON.NUMBER"
+                },
+                {
+                    "name": "Ordinal",
+                    "type": "ORDINAL"
+                },
+                {
+                    "name": "Tweet",
+                    "type": "TWITTER_MESSAGE"
+                }
+            ]
+        },
+        {
+            "intent": "ReplyFocus",
+            "slots": [
+                {
+                    "name": "Index",
+                    "type": "AMAZON.NUMBER"
+                },
+                {
+                    "name": "Ordinal",
+                    "type": "ORDINAL"
+                }
+            ]
+        },
+        {
+            "intent": "PreviousIntent",
+            "slots": []
+        }
+    ]
+}

@@ -1,0 +1,149 @@
+PostTweet       i want to post a tweet to twitter
+PostTweet	  please post a tweet
+PostTweet	  	 post a tweet
+PostTweet		      post a tweet please
+PostTweet		      	   i would like to post a tweet
+PostTweet       post {Tweet}
+PostTweet       tweet {Tweet} on twitter
+PostTweet       tweet {Tweet}
+PostTweet       post {Tweet} on twitter
+PostTweet	     please post {Tweet} on twitter
+PostTweet	     	    post {Tweet}
+PostTweet		    	 tweet {Tweet}
+PostTweet			       post a message {Tweet}
+PostTweet			       	    tweet a message {Tweet}
+PostTweet				    	  update my status {Tweet}
+PostTweet					  	 create a message {Tweet}
+PostTweet						 	note to self {Tweet}
+NextIntent							     next please
+NextIntent							     	  next
+NextIntent									more
+NextIntent										tell me more
+NextIntent										     what next
+PreviousIntent										     go back
+PreviousIntent										     previous
+PreviousIntent										     what was the last tweet
+ListHomeTweets										     list my home tweets
+ListHomeTweets										     what is new
+ListHomeTweets										     show me tweets on my home page
+ListHomeTweets										     what are the tweets on my twitter wall
+ListHomeTweets										     what are the top tweets
+ListHomeTweets										     read out some tweets
+ListHomeTweets										     what is up
+ListHomeTweets										     what is happening
+ListHomeTweets										     what happening on my homepage
+ListHomeTweets										     list home page tweets
+ListHomeTweets										     what are the top tweets on my homepage
+ListHomeTweets										     my homepage please
+ListHomeTweets										     what are the tweets on my timeline
+ListHomeTweets										     tell me my homepage
+ListHomeTweets										     what is on my homepage
+ListHomeTweets										     what is on my time line
+ListHomeTweets										     show me my timeline
+ListHomeTweets										     what is on my home page
+ListHomeTweets										     what is new
+SearchTweets    search for tweets about {harry potter|Topic}
+SearchTweets	search for tweets about {something important|Topic}
+SearchTweets	find me some tweets {a topic of my choosing|Topic}
+SearchTweets	search for {obama|Topic}
+SearchTweets	look for some tweets about {modi | Topic}
+SearchTweets	please search for some tweets
+SearchTweets	find tweets about {life|Topic}
+SearchTweets	find tweets about {yo|Topic}
+SearchTweets	show me the top tweets about {the paris terror attacks|Topic}
+FindLatestMentions   tell me my latest mentions
+FindLatestMentions   what are my latest mentions
+FindLatestMentions   has anyone mentioned me
+FindLatestMentions   if anybody has mentioned me
+FindLatestMentions   who mentioned me recently
+FindLatestMentions   are there any tweets that mention me
+FindLatestMentions   do I have any replies
+FindLatestMentions   are there any tweets for me
+FindLatestMentions   tweets mentioning me
+FindLatestMentions   list my mentions
+FindFavouriteTweets  list my favorite tweets
+FindFavouriteTweets  list my favorites
+FindFavouriteTweets  what are my favorites
+FindFavouriteTweets  tweets i have favourited
+FindFavouriteTweets  tell me my recent favorites
+FindFavouriteTweets  for my favorite tweets
+RetweetsOfMe	     my retweets
+RetweetsOfMe	     who retweeted me
+RetweetsOfMe	     list my retweets
+RetweetsOfMe	     list my artie's'
+RetweetsOfMe	     show me my artie's
+RetweetsOfMe	     show my artie's
+RetweetsOfMe	     what are my retweets
+RetweetsOfMe	     has anyone retweeted me recently
+RetweetsOfMe	     do i have any retweets
+RetweetsOfMe	     if i have any retweets
+RetweetsOfMe	     someone has retweeted me
+UserTweets	     tweets by me
+UserTweets	     some tweets i have posted
+UserTweets	     show my tweets
+UserTweets	     tell me my last few tweets
+UserTweets	     my tweets
+UserTweets	     tweets written by me
+UserTweets	     tweets i wrote
+UserTweets	     find some tweets i wrote
+UserTweets	     find some tweets written by me
+UserTweets	     my own tweets
+UserTweets	     what are the last tweet posted by me
+UserTweets	     what are the last tweets posted by me
+MoreInfo	     more info about tweet {Index}
+MoreInfo	     tell me more about tweet number {Index}
+MoreInfo	     tell me more about the {Ordinal} tweet
+MoreInfo	     more info on number {Index} please
+MoreInfo	     tell me more about number {Index}
+MoreInfo	     who wrote number {Index}
+ReplyIntent	     reply saying {Tweet}
+ReplyIntent	     reply {Tweet}
+ReplyIntent	     post reply {Tweet}
+ReplyFocus	     reply to tweet number {Index}
+ReplyFocus	     reply to tweet {Index}
+ReplyFocus	     reply to tweet {Index}	please
+ReplyIntent	     reply to tweet number {Index} {Tweet}
+ReplyFocus	     please reply to the {Ordinal} tweet
+ReplyIntent	     please reply to the {Ordinal} saying {Tweet}
+ReplyIntent	     please reply {Tweet}
+ReplyFocus	     post reply to the {Ordinal}
+ReplyFocus	     post reply to this one
+ReplyFocus 	     please reply to the {Ordinal} tweet
+ReplyIntent	     post a reply to tweet number {Index} {Tweet}
+ReplyIntent write a reply saying {Tweet}
+ReplyIntent post a reply saying {Tweet}
+ReplyIntent post a reply to number {Index} saying {Tweet}
+ReplyIntent post a reply and say {Tweet}
+ReplyIntent reply saying {Tweet}
+ReplyIntent please reply to this saying {Tweet}
+ReplyIntent reply {Tweet}
+ReplyIntent post reply {Tweet}
+ReplyIntent please post reply {Tweet}
+ReplyIntent please reply {Tweet}
+YesIntent   hell yeah
+YesIntent   yes
+YesIntent   yup
+YesIntent   sure
+YesIntent   go ahead
+YesIntent   do it 
+YesIntent   please do
+AMAZON.StopIntent  no stop
+AMAZON.StopIntent  no
+AMAZON.StopIntent  nope
+AMAZON.StopIntent  nada
+AMAZON.StopIntent  please no
+AMAZON.StopIntent  please don't
+SearchTrends	   what is trending right now
+SearchTrends	   what is trending in {Location}
+SearchTrends	   what trends in {Location}
+SearchTrends	   tell me trends in {Location}
+SearchTrends	   please tell me the trends in {Location}
+SearchTrends	   what is trending near me 
+SearchTrends	   find the top trending hashtags in {Location}
+SearchTrends	   what are the trending topics in {Location}
+SearchTrends	   {Location} trends please
+SearchTrends	   what are the top trends near me
+SearchTrends	   what are the top hashtags near me
+SearchTrends	   which hashtags are trending near me
+SearchTrends	   which hashtags are trending
+SearchTrends	   trends please
