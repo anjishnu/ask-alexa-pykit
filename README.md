@@ -164,4 +164,12 @@ Contributing
 
 - Bug fixes, bug reports and new documentation are all appreciated!
 
+Projects that use this library
+--------------
+
+- Rap Battle Alexa - http://devpost.com/software/rapbattlealexa
+- Twitter Reader (Official Twitter Skill for Alexa)
+- How much is it worth - https://www.hackster.io/minus-et-cortex/how-much-it-worth-07e190
+- Useful Science 
+
 Credits: Anjishnu Kumar 2015
