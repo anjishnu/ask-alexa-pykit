@@ -172,4 +172,6 @@ Projects that use this library
 - How much is it worth - https://www.hackster.io/minus-et-cortex/how-much-it-worth-07e190
 - Useful Science 
 
+Let me know if you know any other projects that use or build on top of ask-alexa-pykit.
+
 Credits: Anjishnu Kumar 2015
