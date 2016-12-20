@@ -75,7 +75,7 @@ class Response(object):
     def __repr__(self):
         return json.dumps(self.json_obj, indent=4)
 
-    def with_card(self, title, content, subtitle, card_type='Simple'):
+    def with_card(self, title, content=None, subtitle=None, card_type='Simple'):
         new_obj = dict(self.json_obj)
         new_obj['response']['card'] = ResponseBuilder.create_card(title, content,
                                                                         subtitle, card_type)
