@@ -171,7 +171,10 @@ Projects that use this library
 - Twitter Reader (Official Twitter Skill for Alexa)
 - How much is it worth - https://www.hackster.io/minus-et-cortex/how-much-it-worth-07e190
 - Useful Science 
+- University of Pennsylvania, Deep Learning Methods for Automated Discourse - (http://dialog-systems-class.org/assignment1.html) If this library helps you build some dialog systems - please remember to cite it! 
 
 Let me know if you know any other projects that use or build on top of ask-alexa-pykit.
+
+If you use this 
 
 Credits: Anjishnu Kumar 2015
