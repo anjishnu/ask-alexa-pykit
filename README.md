@@ -175,6 +175,16 @@ Projects that use this library
 
 Let me know if you know any other projects that use or build on top of ask-alexa-pykit.
 
+'''
+@Misc{kumarask2016,
+author =   {Anjishnu Kumar},
+title =    {ASK Alexa PyKit},
+howpublished = {\url{github.com/anjishnu/ask-alexa-pykit}},
+year = {2016}
+}
+'''
+
+
 If you use this 
 
 Credits: Anjishnu Kumar 2015
