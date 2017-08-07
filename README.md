@@ -171,7 +171,9 @@ Projects that use this library
 - Twitter Reader (Official Twitter Skill for Alexa)
 - How much is it worth - https://www.hackster.io/minus-et-cortex/how-much-it-worth-07e190
 - Useful Science 
-- University of Pennsylvania, Deep Learning Methods for Automated Discourse - (http://dialog-systems-class.org/assignment1.html) If this library helps you build some dialog systems - please remember to cite it! 
+- University of Pennsylvania, Deep Learning Methods for Automated Discourse - (http://dialog-systems-class.org/assignment1.html) 
+
+If this library helps you build some dialog systems or do some interesting research - please remember to cite it! 
 
 ```
   @Misc{kumarask2016,
