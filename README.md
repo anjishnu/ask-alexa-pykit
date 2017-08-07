@@ -176,7 +176,7 @@ Projects that use this library
 If this library helps you build some dialog systems or do some interesting research - please remember to cite it! 
 
 ```
-  @Misc{kumarask2016,
+  @Misc{kumarask2015,
   author =   {Anjishnu Kumar},
   title =    {ASK Alexa PyKit},
   howpublished = {\url{github.com/anjishnu/ask-alexa-pykit}},
