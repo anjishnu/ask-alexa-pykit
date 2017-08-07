@@ -173,18 +173,14 @@ Projects that use this library
 - Useful Science 
 - University of Pennsylvania, Deep Learning Methods for Automated Discourse - (http://dialog-systems-class.org/assignment1.html) If this library helps you build some dialog systems - please remember to cite it! 
 
+```
+  @Misc{kumarask2016,
+  author =   {Anjishnu Kumar},
+  title =    {ASK Alexa PyKit},
+  howpublished = {\url{github.com/anjishnu/ask-alexa-pykit}},
+  year = {2016}
+  }
+```
 Let me know if you know any other projects that use or build on top of ask-alexa-pykit.
-
-'''
-@Misc{kumarask2016,
-author =   {Anjishnu Kumar},
-title =    {ASK Alexa PyKit},
-howpublished = {\url{github.com/anjishnu/ask-alexa-pykit}},
-year = {2016}
-}
-'''
-
-
-If you use this 
 
 Credits: Anjishnu Kumar 2015
