@@ -12,7 +12,7 @@ Projects that use this library
 - Rap Battle Alexa - http://devpost.com/software/rapbattlealexa
 - Twitter Reader (Official Twitter Skill for Alexa)
 - How much is it worth - https://www.hackster.io/minus-et-cortex/how-much-it-worth-07e190
-- Useful Science 
+- Useful Science - https://github.com/anjishnu/ask-useful-science
 - University of Pennsylvania, Deep Learning Methods for Automated Discourse - (http://dialog-systems-class.org/assignment1.html) 
 
 If this library helps you build some dialog systems or do some interesting research - please remember to cite it! 
