@@ -6,7 +6,30 @@ ask-alexa-pykit 0.5 is out!
 
 A minimalist framework for developing apps (skills) for the Amazon Echo's  SDK: The Alexa Skills Kit (<b>ASK</b>).
 
+Projects that use this library
+--------------
+
+- Rap Battle Alexa - http://devpost.com/software/rapbattlealexa
+- Twitter Reader (Official Twitter Skill for Alexa)
+- How much is it worth - https://www.hackster.io/minus-et-cortex/how-much-it-worth-07e190
+- Useful Science 
+- University of Pennsylvania, Deep Learning Methods for Automated Discourse - (http://dialog-systems-class.org/assignment1.html) 
+
+If this library helps you build some dialog systems or do some interesting research - please remember to cite it! 
+
+```
+  @Misc{kumarask2015,
+  author =   {Anjishnu Kumar},
+  title =    {ASK Alexa PyKit},
+  howpublished = {\url{github.com/anjishnu/ask-alexa-pykit}},
+  year = {2015}
+  }
+```
+Let me know if you know any other projects that use or build on top of ask-alexa-pykit.
+
+
 <b>What does this library do?</b>
+----------------
 - Remove boiler plate from Alexa Skills Kit Code - maps intents directly to their handler functions.
 - Provide utils to quickly and effectively generate and manipulate sample utterances and the intent schema. 
 - Provides python objects to quickly build alexa responses. 
@@ -15,6 +38,7 @@ A minimalist framework for developing apps (skills) for the Amazon Echo's  SDK: 
 To use this code for your own skill, simply generate training data, and an intent schema definition and edit <b>lambda_function.py</b> to add handler functions for the intents and requests that your skill supports - this should be enough to get started.
 
 <b>Note</b>: Unless someone asks me to reconsider - I am now only going to do further releases of this library for AWS Lambda - the core library is concise enough that it can be included into any python server framework with just a few imports. The old releases (for cherrypy) will contain the infuriating request validation parts of the library which can be useful for people who don't want to use the Lambda or LambdaProxy approach to skill development.
+
 
 # What's new?
 
@@ -163,26 +187,5 @@ Contributing
 - And you're done!
 
 - Bug fixes, bug reports and new documentation are all appreciated!
-
-Projects that use this library
---------------
-
-- Rap Battle Alexa - http://devpost.com/software/rapbattlealexa
-- Twitter Reader (Official Twitter Skill for Alexa)
-- How much is it worth - https://www.hackster.io/minus-et-cortex/how-much-it-worth-07e190
-- Useful Science 
-- University of Pennsylvania, Deep Learning Methods for Automated Discourse - (http://dialog-systems-class.org/assignment1.html) 
-
-If this library helps you build some dialog systems or do some interesting research - please remember to cite it! 
-
-```
-  @Misc{kumarask2015,
-  author =   {Anjishnu Kumar},
-  title =    {ASK Alexa PyKit},
-  howpublished = {\url{github.com/anjishnu/ask-alexa-pykit}},
-  year = {2015}
-  }
-```
-Let me know if you know any other projects that use or build on top of ask-alexa-pykit.
 
 Credits: Anjishnu Kumar 2015
