@@ -1,6 +1,6 @@
 # ask-alexa-pykit
 
-Release Version : <b>Master</b> (Unstable! For a stable release, check out the 0.5.6 branch)
+Release Version : <b>Master</b> (Unstable! For a stable release, check out the 0.5 branch)
 
 ask-alexa-pykit 0.5 is out!
 
