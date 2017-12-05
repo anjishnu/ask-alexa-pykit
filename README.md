@@ -16,6 +16,38 @@ Projects that use this library
 - University of Pennsylvania, Deep Learning Methods for Automated Discourse - (http://dialog-systems-class.org/assignment1.html) 
 - Phillipe Loher's Tutorial: https://mldavidson.phillipe.com/wp-content/uploads/2016/11/ml-alexa.pptx
 
+Other Github Projects
+- https://github.com/kfowlks/aws_alexa_comcast_data_usage_lambda
+- https://github.com/btelle/poolmon
+- https://github.com/mijdavis2/ask-shrugs
+- https://github.com/geoaxis/ask-sweden
+- https://github.com/cameron-gagnon/CookmATE
+- https://github.com/ysak-y/alexa-sqs-home-manager
+- https://github.com/ysak-y/alexa-irkit
+- https://github.com/mastash3ff/Alexa-IsStreamable
+- https://github.com/peterpanning/AlexaTransit
+- https://github.com/ysak-y/yeelight-with-alexa
+- https://github.com/SydneyDockerMeetupAWS/meetup-code
+- https://github.com/kdietze3/alexa-binary-clock
+- https://github.com/hassanshamim/thebaker
+- https://github.com/btelle/alexa-boardgame-answers
+- https://github.com/amphy/alexa-league
+- https://github.com/potykion/empatika-internship
+- https://github.com/mirkoprescha/alexa-my-reminders
+- https://github.com/kdietze3/alexa-transaction-or-no-transaction
+- https://github.com/pombredanne/autopy-1
+- https://github.com/ktseytlin/AlexaComplimentMe
+- https://github.com/j-c-h-e-n-g/alexa-ramdass
+- https://github.com/bugbiteme/EMC-NorCal-SE-AlexaChallenge-2016
+- https://github.com/daphnei/nn_chatbot
+- https://github.com/ysak-y/alexa-doc
+- https://github.com/ckeitt/alexa-genius
+- https://github.com/amandarice/AnimalTranslator
+- https://github.com/armandofox/alexa-marantz-py
+- https://github.com/vlnk/alexa-meets-dmn
+- https://github.com/amandarice/CodeComments
+
+
 If this library helps you build some dialog systems or do some interesting research - please remember to cite it! 
 
 ```
